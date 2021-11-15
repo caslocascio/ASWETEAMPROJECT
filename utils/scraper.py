@@ -11,10 +11,15 @@ def getProfReview(Url, prof_name):
     for c in cards:
         title = c.find("h5", class_="card-title").text
         date = c.find("h6", class_="card-subtitle").text
-        review = c.find("p", class_="card-text").text[8:].replace("\n", "\\n").replace('"', '""')
-        workload = c.find("p", class_="card-subtitle").text[10:].replace("\n", "\\n").replace('"', '""')
-        m = re.search('Agree: (\d+) \| Disagree: (\d+) \| Funny: (\d+)', c.text)
-        yield '"%s","%s","%s","%s","%s",%s,%s,%s\n' % (prof_name, title, date, review, workload, m.group(1),m.group(2),m.group(3))
+        review = c.find("p", class_="card-text").text[8:] \
+            .replace("\n", "\\n").replace('"', '""')
+        workload = c.find("p", class_="card-subtitle").text[10:] \
+            .replace("\n", "\\n").replace('"', '""')
+        m = re.search(r'Agree: (\d+) \| Disagree: (\d+) \| Funny: (\d+)',
+                      c.text)
+        yield '"%s","%s","%s","%s","%s",%s,%s,%s\n' % \
+            (prof_name, title, date, review, workload,
+             m.group(1), m.group(2), m.group(3))
 
 
 def getProfs(Url):
@@ -29,7 +34,8 @@ if __name__ == "main":
         BaseURL = "https://culpaarchive.herokuapp.com"
         profs = getProfs(BaseURL)
         print("total:" + str(len(profs)))
-        f.write('"professor","class","date","review","workload","agree","disagree","funny"\n')
+        f.write('"professor","class","date","review","workload","agree", \
+                "disagree","funny"\n')
         cnt = 1
         for prof in profs:
             result = getProfReview(BaseURL + prof['href'], prof.text)
@@ -37,4 +43,3 @@ if __name__ == "main":
                 f.write(txt)
             print("\r" + str(cnt) + " done", end="", flush=True)
             cnt += 1
-
