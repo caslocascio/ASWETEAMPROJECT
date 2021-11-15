@@ -3,26 +3,25 @@ from sqlite3 import Error
 import csv
 
 '''
-Initializes the Table GAME
-Do not modify
+This program db.py organizes the scraped culpa data into a database for
+our admin use. It allows us to query upon certain fields, making it
+easier to protect our data from API users and create API endpoints for wanted
+information. Information includes aspects about courses such as
+reviews, workload, etc.
 '''
 
 csv_file_name = "culpa.csv"
 
 
-#USAGE:
-#   db.py uses sqlite3, the database is named CULPADB
-#   inside the table contains entries of tuples.
-#   Namely, in this format:
-#   (professor, class, date, review, workload, agree, disagree, funny)
-#
-#   TO USE DB: call init_tb()
-#
-#   TO USE GET ENTRY: call get_entry_'type'('parameter') 
-#       with type being a the category (prof, class, etc) and parameter being a string
-#       ---> returns a list of tuples
+''' each entry in the CULPADB table includes the professor name, class title,
+date, review (inclusive of commentary on both professor and class), workload,
+agree (positive feelings toward class and/or professor), disagree (negative
+feelings toward class and/or professor), and funny (students tend to be drawn
+to classes which include a sense of humor)'''
+
+
+# creates Table
 def init_db():
-    # creates Table
     conn = None
     try:
         conn = sqlite3.connect('sqlite_db')
@@ -39,15 +38,17 @@ def init_db():
             conn.close()
 
 
+# reads aquired culpa data from csv into database
 def create_db():
     f = open(csv_file_name)
     csvreader = csv.reader(f)
     next(csvreader)
     for row in csvreader:
-            add_entry(tuple(row))
+        add_entry(tuple(row))
 
 
-def add_entry(entry):  # will take in a tuple
+# add entry into the database where entry is a tuple
+def add_entry(entry):
     try:
         conn = sqlite3.connect('sqlite_db')
         conn.execute("INSERT INTO CULPADB VALUES "+str(entry))
@@ -60,6 +61,13 @@ def add_entry(entry):  # will take in a tuple
         return False
 
 
+'''
+entry can assume values like professor name or course title
+type can assume values like 'professor' or 'course'
+'''
+
+
+# retrives entry from database based upon desired information
 def get_entry(entry, type):
     try:
         conn = sqlite3.connect('sqlite_db')
@@ -76,33 +84,44 @@ def get_entry(entry, type):
 
         c.close()
         conn.close()
-        
+
         return entries
     except Error as e:
         print(e)
         return None
 
 
+# enter professor name
 def get_entry_professor(professor):
     return get_entry(professor, "professor")
-    
 
+
+# enter course title
 def get_entry_class(course):
     return get_entry(course, "class")
 
+
+# enter date of review in form like: 'December 31, 1999'
 def get_entry_date(date):
     return get_entry(date, "date")
 
+
+# enter agreeable rating as a string (typically between 1-5)
 def get_entry_agree(agree):
     return get_entry(agree, "agree")
 
+
+# enter disagreeable rating as a string (typically between 1-5)
 def get_entry_disagree(disagree):
     return get_entry(disagree, "disagree")
 
+
+# enter funny rating as a string (typically between 1-5)
 def get_entry_funny(funny):
     return get_entry(funny, "funny")
 
 
+# clears database
 def clear():
     conn = None
     try:
@@ -116,61 +135,6 @@ def clear():
         if conn:
             conn.close()
 
-'''
+
 if __name__ == '__main__':
     init_db()
-    print('=======================test=====================================')
-    print('----------------------------------------------------------------')
-    print('get all Aaron Fox entries: ')
-    lista = get_entry_professor('Aaron Fox')
-    for dup in lista:
-        print(dup)
-        print()
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('get all Introduction to Urban Studies')
-    listb = get_entry_class('Introduction to Urban Studies')
-    for dup in listb:
-        print(dup)
-        print()
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('get all December 31, 1999')
-    listc = get_entry_date('December 31, 1999')
-    for dup in listc:
-        print(dup)
-        print()
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('get all funny = 5')
-    liste = get_entry_funny('5')
-    for dup in liste:
-        print(dup)
-        print()
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('get all agree = 1')
-    listf = get_entry_agree('1')
-    for dup in listf:
-        print(dup)
-        print()
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('----------------------------------------------------------------')
-    print('get all disagree = 2')
-    listg = get_entry_disagree('2')
-    for dup in listg:
-        print(dup)
-        print()
-    print('----------------------------------------------------------------')
-    clear()
-'''
