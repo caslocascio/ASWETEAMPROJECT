@@ -55,7 +55,7 @@ def add_entry(entry):
         conn.execute("INSERT INTO CULPADB VALUES "+str(cleaned_entry))
         conn.commit()
         conn.close()
-        #print('database online, adding tuple: '+str(cleaned_entry))
+        # print('database online, adding tuple: '+str(cleaned_entry))
         return True
     except Error as e:
         print(e)
@@ -68,12 +68,12 @@ type can assume values like 'professor' or 'course'
 '''
 
 
-#removes all ' and " since they break sql
+# removes all ' and " since they break sql
 def clean_string(entry):
     arr = []
     for index in range(len(entry)):
         str = entry[index]
-        arr.append((str.replace('\'', '')).replace('\"',''))
+        arr.append((str.replace('\'', '')).replace('\"', ''))
     return tuple(arr)
 
 
