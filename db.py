@@ -50,11 +50,12 @@ def create_db():
 # add entry into the database where entry is a tuple
 def add_entry(entry):
     try:
+        cleaned_entry = clean_string(entry)
         conn = sqlite3.connect('sqlite_db')
-        conn.execute("INSERT INTO CULPADB VALUES "+str(entry))
+        conn.execute("INSERT INTO CULPADB VALUES "+str(cleaned_entry))
         conn.commit()
         conn.close()
-        print('database online, adding tuple: '+str(entry))
+        #print('database online, adding tuple: '+str(cleaned_entry))
         return True
     except Error as e:
         print(e)
@@ -65,6 +66,15 @@ def add_entry(entry):
 entry can assume values like professor name or course title
 type can assume values like 'professor' or 'course'
 '''
+
+
+#removes all ' and " since they break sql
+def clean_string(entry):
+    arr = []
+    for index in range(len(entry)):
+        str = entry[index]
+        arr.append((str.replace('\'', '')).replace('\"',''))
+    return tuple(arr)
 
 
 # retrives entry from database based upon desired information
