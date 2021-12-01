@@ -101,6 +101,26 @@ def get_entry(entry, type):
         return None
 
 
+# get all entries
+def get_all():
+    try:
+
+        conn = sqlite3.connect('sqlite_db')
+        conn.execute("SELECT * FROM CULPADB")
+        records = conn.fetchall()
+
+        entries = []
+        for entry in records:
+            entries.append(entry)
+
+        conn.close()
+
+        return entries
+    except Error as e:
+        print(e)
+        return None
+
+
 # enter professor name
 def get_entry_professor(professor):
     return get_entry(professor, "professor")

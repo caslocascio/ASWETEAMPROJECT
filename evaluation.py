@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify
 import db
 # import analysis commented out for use in second iter
 import random
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lex_rank import LexRankSummarizer
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -34,7 +37,6 @@ please see '/easy' and '/extensions' endpoints.
 '''
 
 
-# will test this in second iteration since it is randomized
 @app.route('/professor', methods=['GET'])
 def prof():
     # get professor name from request URL
@@ -44,6 +46,33 @@ def prof():
     # return a random review from list
     num = random.randint(0, len(lst))
     return jsonify(entry=lst[num])
+
+
+'''
+'/summary' endpoint
+Method Type: GET
+return: summary of a professor's reviews (1 sentence per review)
+requires: desired professor name
+'''
+
+
+@app.route('/summary', methods=['GET'])
+def summary():
+    # get professor name from request URL
+    profName = request.args.get('profname')
+    # get review records from the database of this professor
+    lst = db.get_entry_professor(profName)
+    # extract review strings and summarize
+    resultStr = ""
+    for entry in lst:
+        review = entry[3]
+        # summarizer logic
+        parser = PlaintextParser.from_string(review, Tokenizer("english"))
+        summarizer = LexRankSummarizer()
+        summ = summarizer(parser.document, 1)
+        resultStr += summ
+
+    return jsonify(summary_of_reviews=resultStr)
 
 
 '''
@@ -225,6 +254,79 @@ def total_reviews():
     # get review records from the database of this professor
     lst = db.get_entry_professor(profName)
     return jsonify(professor_name=profName, total_reviews=len(lst))
+
+
+# helper function to find classes based on category
+def find_class(class_type):
+
+    # fetching all the entries in the database
+    allEntries = db.get_all()
+
+    # creating a results list to hold classes for comparison
+    results = []
+
+    for entry in allEntries:
+        # extracting course title from entry
+        className = entry[1]
+
+        '''representing four different types of classes: art, computer science,
+           math and languages. We believe these are a diverse set of categories
+           which encapsulate numerous classes.
+        '''
+
+        if class_type == 'art':
+            artTypes = ['art', 'ceramics', 'painting',
+                        'drawing', 'photography']
+            for category in artTypes:
+                if category in className:
+                    results.append(entry)
+
+        if class_type == 'computer science':
+            compsciTypes = ['computer science', 'computing',
+                            'artificial intelligence', 'machine learning']
+            for category in compsciTypes:
+                if category in className:
+                    results.append(entry)
+
+        if class_type == 'math':
+            mathTypes = ['math', 'calculus', 'statistics', 'algebra']
+            for category in mathTypes:
+                if category in className:
+                    results.append(entry)
+
+        if class_type == 'language':
+            languageTypes = ['French', 'Spanish', 'Chinese', 'Italian']
+            for category in languageTypes:
+                if category in className:
+                    results.append(entry)
+
+    return results
+
+
+# helper function to compare
+def compare(comparison_type, classes):
+    pass
+
+
+'''
+'classes' endpoint
+Method Type: GET
+return: list of desired classes for given category
+requires: class type and desired professor name, course title, status, etc
+'''
+
+
+@app.route('/classes', methods=['GET'])
+def classes():
+    # get class type from request URL
+    classType = request.args.get('classtype')
+    # get comparator from request URL
+    comparator = request.args.get('comparatortype')
+    # call upon find_class()
+    classFinder = find_class(classType)
+    # conduct appropriate comparison
+    results = compare(comparator, classFinder)
+    return jsonify(class_results=results)
 
 
 """
