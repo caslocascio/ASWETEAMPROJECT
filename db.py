@@ -40,6 +40,7 @@ def init_db():
         cur = conn.cursor()
         cur.execute("SELECT count(*) FROM \"WinstonZhang1999/CULPA\".\"culpadb\"")
         print(cur.fetchone())
+
     except Error as e:
         print(e)
 
@@ -102,7 +103,7 @@ def get_entry(entry, type):
         entries = []
         for e in records:
             if e == entry:
-                entries.append(e)
+                entries.append(str(e))
 
         c.close()
         conn.close()
