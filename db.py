@@ -1,6 +1,8 @@
 import sqlite3
 from sqlite3 import Error
 import csv
+import bitdotio
+from pprint import pprint
 
 '''
 This program db.py organizes the scraped culpa data into a database for
@@ -11,6 +13,7 @@ reviews, workload, etc.
 '''
 
 csv_file_name = "culpa.csv"
+api_key = "PzCG_Njs6mZgCzDUUGyBywTZvnda"
 
 
 ''' each entry in the CULPADB table includes the professor name, class title,
@@ -24,12 +27,19 @@ to classes which include a sense of humor)'''
 def init_db():
     conn = None
     try:
+        '''
         conn = sqlite3.connect('sqlite_db')
         conn.execute('CREATE TABLE CULPADB(professor TEXT, class TEXT,' +
                      'date TEXT, review TEXT, workload TEXT' +
                      ', agree TEXT, disagree TEXT, funny TEXT)')
         create_db()
         print('Database Online, table created')
+        '''
+        b = bitdotio.bitdotio(api_key)
+        conn = b.get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT count(*) FROM \"WinstonZhang1999/CULPA\".\"culpadb\"")
+        print(cur.fetchone())
     except Error as e:
         print(e)
 
@@ -80,17 +90,19 @@ def clean_string(entry):
 # retrives entry from database based upon desired information
 def get_entry(entry, type):
     try:
-        conn = sqlite3.connect('sqlite_db')
+        b = bitdotio.bitdotio(api_key)
+        conn = b.get_connection()
         c = conn.cursor()
-        print("connected to SQLite")
+        print("connected to bitdotio")
 
-        sql_select_query = "SELECT * FROM CULPADB WHERE " + type + " = ?"
-        c.execute(sql_select_query, (entry,))
+        sql_select_query = "SELECT "+type+" FROM \"WinstonZhang1999/CULPA\".culpadb"
+        c.execute(sql_select_query, (entry))
         records = c.fetchall()
 
         entries = []
-        for entry in records:
-            entries.append(entry)
+        for e in records:
+            if e == entry:
+                entries.append(e)
 
         c.close()
         conn.close()
@@ -106,7 +118,7 @@ def get_all():
     try:
 
         conn = sqlite3.connect('sqlite_db')
-        conn.execute("SELECT * FROM CULPADB")
+        conn.execute("SELECT * \"WinstonZhang1999/CULPA\".culpadb")
         records = conn.fetchall()
 
         entries = []
@@ -152,6 +164,7 @@ def get_entry_funny(funny):
 
 
 # clears database
+'''
 def clear():
     conn = None
     try:
@@ -164,6 +177,7 @@ def clear():
     finally:
         if conn:
             conn.close()
+'''
 
 
 if __name__ == '__main__':

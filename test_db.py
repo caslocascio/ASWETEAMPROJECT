@@ -7,9 +7,9 @@ class Test_Testdb(unittest.TestCase):
         db.init_db()
         return
 
-    def tearDown(self):
-        db.clear()
-        return
+    #def tearDown(self):
+    #    db.clear()
+    #    return
 
     def test_get_prof(self):
         # test get_entry_prof from db, using 'Aaron Fox'
@@ -35,23 +35,23 @@ class Test_Testdb(unittest.TestCase):
     def test_get_funny(self):
         # test get_entry_funny, using '5' as test
         # each entry should have the students funny score at entry[7]
-        ls = db.get_entry_funny('5')
+        ls = db.get_entry_funny(5)
         for entry in ls:
-            self.assertEqual(entry[7], '5')
+            self.assertEqual(entry[7], 5)
 
     def test_get_agree(self):
         # test get_entry_agree, using '1' as test
         # each entry should have the students agreeability score at entry[5]
-        ls = db.get_entry_agree('1')
+        ls = db.get_entry_agree(1)
         for entry in ls:
-            self.assertEqual(entry[5], '1')
+            self.assertEqual(entry[5], 1)
 
     def test_get_disagree(self):
         # test get_entry_disagree, using '2' as test
         # each entry should have the students agreeability score at entry[6]
-        ls = db.get_entry_disagree('2')
+        ls = db.get_entry_disagree(2)
         for entry in ls:
-            self.assertEqual(entry[6], '2')
+            self.assertEqual(entry[6], 2)
 
 
 if __name__ == '__main__':
