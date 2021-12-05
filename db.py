@@ -96,14 +96,15 @@ def get_entry(entry, type):
         c = conn.cursor()
         print("connected to bitdotio")
 
-        sql_select_query = "SELECT "+type+" FROM \"WinstonZhang1999/CULPA\".culpadb"
-        c.execute(sql_select_query, (entry))
+        sql_select_query = "SELECT * FROM \"WinstonZhang1999/CULPA\".culpadb" + \
+            " WHERE "+type+"=\'"+str(entry)+"\'"
+        records = []
+        c.execute(sql_select_query, (records))
         records = c.fetchall()
 
         entries = []
         for e in records:
-            if e == entry:
-                entries.append(str(e))
+            entries.append(e)
 
         c.close()
         conn.close()

@@ -44,8 +44,10 @@ def prof():
     # get review records from the database of this professor
     lst = db.get_entry_professor(profName)
     # return a random review from list
-    num = random.randint(0, len(lst))
-    return jsonify(entry=lst[num])
+    #num = random.randint(0, len(lst))
+    print(lst)
+    #return jsonify(entry=lst[num])
+    return jsonify(reviews=lst)
 
 
 '''
