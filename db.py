@@ -98,6 +98,7 @@ def get_entry(entry, type):
 
         sql_select_query = "SELECT * FROM \"WinstonZhang1999/CULPA\".culpadb" + \
             " WHERE "+type+"=\'"+str(entry)+"\'"
+        
         records = []
         c.execute(sql_select_query, (records))
         records = c.fetchall()
