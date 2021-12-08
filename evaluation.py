@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 import db
 # import analysis commented out for use in second iter
 from sumy.parsers.plaintext import PlaintextParser
@@ -43,11 +43,14 @@ def prof():
     # get professor name from request URL
     profName = request.args.get('profname')
     # get review records from the database of this professor
+    lst = []
     lst = db.get_entry_professor(profName)
     # return a random review from list
-    num = random.randint(0, len(lst))
-    return jsonify(reviews=lst[num])
-
+    if len(lst) > 0:
+        num = random.randint(0, len(lst))
+        return jsonify(reviews=lst[num])
+    else:
+        return abort(404)
 
 '''
 '/summary' endpoint
