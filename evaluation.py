@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify, abort
-import db
-# import analysis commented out for use in second iter
-from sumy.parsers.plaintext import PlaintextParser
-import random
-import nltk 
-nltk.download('punkt')
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
+from sumy.parsers.plaintext import PlaintextParser
+import db
+# import analysis commented out for use in second iter
+import random
+import nltk
+nltk.download('punkt')
+
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -52,10 +53,11 @@ def prof():
     else:
         return abort(404)
 
+
 '''
 '/summary' endpoint
 Method Type: GET
-return: summary of a professor's reviews (1 sentence per review)
+return: 3 phrase summary of a professor's reviews
 requires: desired professor name
 '''
 
@@ -65,20 +67,23 @@ def summary():
     # get professor name from request URL
     profName = request.args.get('profname')
     # get review records from the database of this professor
+    lst = []
     lst = db.get_entry_professor(profName)
     # extract review strings and summarize
-    resultStr = ""
-    for entry in lst:
-        review = entry[3]
-        # summarizer logic
-        parser = PlaintextParser.from_string(review, Tokenizer("english"))
-        summarizer = LexRankSummarizer()
-        summ = summarizer(parser.document, 1)
-        print("this is sum")
-        print(summ)
-        resultStr += (str(summ[0])+"\n")
+    conCat = ""
+    if len(lst) > 0:
+        for i in range(len(lst)):
+            review = lst[i][3]
+            conCat += review + ' '
 
-    return jsonify(summary_of_reviews=resultStr)
+        # summarizer logic
+        parser = PlaintextParser.from_string(conCat, Tokenizer("english"))
+        summarizer = LexRankSummarizer()
+        # return a three sentence summary based upon all reviews for prof
+        summ = summarizer(parser.document, 3)
+        return jsonify(summart_of_reviews=str(summ))
+    else:
+        return abort(404)
 
 
 '''
@@ -90,8 +95,6 @@ note: user will use this endpoint for either prof or course in one query
 '''
 
 
-# starting off with professor
-# will build logic in second iteration to include class, date, etc
 @app.route('/easy', methods=['GET'])
 def easy():
     # get professor name from request URL
@@ -103,42 +106,39 @@ def easy():
 
     # get review records from the database of this prof or class
     if profName is not None and profName != "":
-        print("entered here for Aaron Fox")
         lst = db.get_entry_professor(profName)
-        print("this is lst in the if statement")
-        print(lst)
     elif course is not None and course != "":
         lst = db.get_entry_class(course)
 
-    print("this is lst")
-    print(lst)
+    if len(lst) > 0:
+        # setting up variables to count instances of ease in entry
+        easyA = 0
+        aPlus = 0
+        lenGrading = 0
+        rec = 0
+        # searching through each review and workload for such ease phrases
+        for i in range(0, len(lst)):
+            extract = lst[i]
+            review = extract[3]
+            workLoad = extract[4]
 
-    # setting up variables to count instances of ease in entry
-    easyA = 0
-    aPlus = 0
-    lenGrading = 0
-    rec = 0
-    # searching through each review and workload for such ease phrases
-    for i in range(0, len(lst)):
-        extract = lst[i]
-        review = extract[3]
-        workLoad = extract[4]
-
-        if 'easy' in review or 'easy' in workLoad:
-            easyA += 1
-        if 'A+' in review or 'A+' in workLoad:
-            aPlus += 1
-        if 'lenient grading' in review or 'lenient grading' in workLoad:
-            lenGrading += 1
-        if 'I recommend' in review or 'I recommend' in workLoad:
-            rec += 1
-    # no instances found
-    if easyA == 0 and aPlus == 0 and lenGrading == 0 and rec == 0:
-        return jsonify(easy_status=False)
+            if 'easy' in review or 'easy' in workLoad:
+                easyA += 1
+            if 'A+' in review or 'A+' in workLoad:
+                aPlus += 1
+            if 'lenient grading' in review or 'lenient grading' in workLoad:
+                lenGrading += 1
+            if 'I recommend' in review or 'I recommend' in workLoad:
+                rec += 1
+        # no instances found
+        if easyA == 0 and aPlus == 0 and lenGrading == 0 and rec == 0:
+            return jsonify(easy_status=False)
+        else:
+            # return counts of each ease phrase based on all reviews
+            return jsonify(easy_A=easyA, A_plus=aPlus,
+                           lenient_grading=lenGrading, I_recommend=rec)
     else:
-        # return counts of each ease phrase based on all reviews for professor
-        return jsonify(easy_A=easyA, A_plus=aPlus,
-                       lenient_grading=lenGrading, I_recommend=rec)
+        return abort(404)
 
 
 '''
@@ -149,54 +149,50 @@ requires: desired course title
 '''
 
 
-# starting off with class
-# will build logic in second iteration to include professor, date, etc
 @app.route('/final', methods=['GET'])
 def final_exam():
     # get course title from request URL
     course = request.args.get('course')
+
+    lst = []
     # get review records from the database of this course
     lst = db.get_entry_class(course)
 
-    # setting up variables to count instances of final information in entry
-    noFinal = 0
-    takeHome = 0
-    finPaper = 0
-    for extract in lst:
-        review = extract[3]
-        print("this is review")
-        print(review)
-        workLoad = extract[4]
-        print("this is work")
-        print(workLoad)
+    if len(lst) > 0:
+        # setting up variables to count instances of final information in entry
+        noFinal = 0
+        takeHome = 0
+        finPaper = 0
+        for extract in lst:
+            review = extract[3]
+            workLoad = extract[4]
 
-        if not (review is None):
-            if 'no final' in review:
-                noFinal += 1
-            if 'take-home' in review:
-                takeHome += 1
-            if 'final paper' in review:
-                finPaper += 1
+            if not (review is None):
+                if 'no final' in review:
+                    noFinal += 1
+                if 'take-home' in review:
+                    takeHome += 1
+                if 'final paper' in review:
+                    finPaper += 1
 
-        elif not (workLoad is None):
-            if 'no final' in workLoad:
-                noFinal += 1
-            if 'take-home' in workLoad:
-                takeHome += 1
-            if 'final paper' in workLoad:
-                finPaper += 1
+            elif not (workLoad is None):
+                if 'no final' in workLoad:
+                    noFinal += 1
+                if 'take-home' in workLoad:
+                    takeHome += 1
+                if 'final paper' in workLoad:
+                    finPaper += 1
 
-    # no instances found
-    print("these are the vars in final")
-    print(noFinal)
-    print(takeHome)
-    print(finPaper)
-    if noFinal == 0 and takeHome == 0 and finPaper == 0:
-        return jsonify(final_exam='no indicator that class is final exam free')
+        # no instances found
+        if noFinal == 0 and takeHome == 0 and finPaper == 0:
+            return jsonify(final_exam='no indicator that class is\
+                                       final exam free')
+        else:
+            # return counts of each ease phrase based on all reviews
+            return jsonify(no_final_exam=noFinal, take_home=takeHome,
+                           final_paper=finPaper)
     else:
-        # return counts of each ease phrase based on all reviews for professor
-        return jsonify(no_final_exam=noFinal, take_home=takeHome,
-                       final_paper=finPaper)
+        return abort(404)
 
 
 '''
@@ -207,34 +203,38 @@ requires: desired professor name
 '''
 
 
-# starting off with professor
-# will build logic in second iteration to include class, date, etc
 @app.route('/extensions', methods=['GET'])
 def extensions():
     # get professor name from request URL
     profName = request.args.get('profname')
+
+    lst = []
     # get review records from the database of this professor
     lst = db.get_entry_professor(profName)
 
-    # setting up variable to count instances of extension in entry
-    extension = 0
-    for extract in lst:
-        review = extract[3]
-        workLoad = extract[4]
+    if len(lst) > 0:
+        # setting up variable to count instances of extension in entry
+        extension = 0
+        for extract in lst:
+            review = extract[3]
+            workLoad = extract[4]
 
-        if not (review is None):
-            if 'extension' in review:
-                extension += 1
+            if not (review is None):
+                if 'extension' in review:
+                    extension += 1
 
-        elif not (workLoad is None):
-            if 'extension' in workLoad:
-                extension += 1
-    # no instances found
-    if extension == 0:
-        return jsonify(extension_status='no indicator prof gives extensions')
+            elif not (workLoad is None):
+                if 'extension' in workLoad:
+                    extension += 1
+        # no instances found
+        if extension == 0:
+            return jsonify(extension_status='no indicator prof\
+                                             gives extensions')
+        else:
+            # return counts of extension based on all reviews for professor
+            return jsonify(extension=extension)
     else:
-        # return counts of extension based on all reviews for professor
-        return jsonify(extension=extension)
+        return abort(404)
 
 
 '''
@@ -245,40 +245,50 @@ requires: desired course title
 '''
 
 
-# starting off with class
-# will build logic in second iteration to include professor, date, etc
 @app.route('/difficulty', methods=['GET'])
 def difficulty():
     # get course title from request URL
     course = request.args.get('course')
-    # get review records from the database of this course
-    lst = db.get_entry_class(course)
+    # get professor name from reuqest URL
+    profName = request.args.get('profname')
 
-    # setting up variable to count instances of difficulty phrases in entry
-    harshGrading = 0
-    boring = 0
-    hard = 0
-    notRec = 0
-    for i in range(0, len(lst)):
-        extract = lst[i]
-        review = extract[3]
-        workLoad = extract[4]
+    lst = []
 
-        if 'harsh grading' in review or 'harsh grading' in workLoad:
-            harshGrading += 1
-        if 'boring' in review or 'boring' in workLoad:
-            boring += 1
-        if 'hard' in review or 'hard' in workLoad:
-            hard += 1
-        if 'not recommend' in review or 'not recommend' in workLoad:
-            notRec += 1
-    # no instances found
-    if harshGrading == 0 and boring == 0 and hard == 0 and notRec == 0:
-        return jsonify(difficulty_status='no indicator course is too tough')
+    # get review records from the database of this prof or class
+    if profName is not None and profName != "":
+        lst = db.get_entry_professor(profName)
+    elif course is not None and course != "":
+        lst = db.get_entry_class(course)
+
+    if len(lst) > 0:
+        # setting up variable to count instances of difficulty phrases in entry
+        harshGrading = 0
+        boring = 0
+        hard = 0
+        notRec = 0
+        for i in range(0, len(lst)):
+            extract = lst[i]
+            review = extract[3]
+            workLoad = extract[4]
+
+            if 'harsh grading' in review or 'harsh grading' in workLoad:
+                harshGrading += 1
+            if 'boring' in review or 'boring' in workLoad:
+                boring += 1
+            if 'hard' in review or 'hard' in workLoad:
+                hard += 1
+            if 'not recommend' in review or 'not recommend' in workLoad:
+                notRec += 1
+        # no instances found
+        if harshGrading == 0 and boring == 0 and hard == 0 and notRec == 0:
+            return jsonify(difficulty_status='no indicator course\
+                                              is too tough')
+        else:
+            # return counts of difficulty phrases based on all reviews
+            return jsonify(harsh_grading=harshGrading, boring=boring,
+                           hard=hard, not_recommended=notRec)
     else:
-        # return counts of difficulty phrases based on all reviews for prof
-        return jsonify(harsh_grading=harshGrading, boring=boring,
-                       hard=hard, not_recommended=notRec)
+        return abort(404)
 
 
 '''
@@ -293,9 +303,15 @@ requires: desired professor name
 def total_reviews():
     # get professor name from request URL
     profName = request.args.get('profname')
+
+    lst = []
     # get review records from the database of this professor
     lst = db.get_entry_professor(profName)
-    return jsonify(professor_name=profName, total_reviews=len(lst))
+
+    if len(lst) > 0:
+        return jsonify(professor_name=profName, total_reviews=len(lst))
+    else:
+        return abort(404)
 
 
 # helper function to find classes based on category
@@ -364,11 +380,15 @@ def classes():
     classType = request.args.get('classtype')
     # get comparator from request URL
     comparator = request.args.get('comparatortype')
-    # call upon find_class()
-    classFinder = find_class(classType)
-    # conduct appropriate comparison
-    results = compare(comparator, classFinder)
-    return jsonify(class_results=results)
+
+    if classType is not None and comparator is not None:
+        # call upon find_class()
+        classFinder = find_class(classType)
+        # conduct appropriate comparison
+        results = compare(comparator, classFinder)
+        return jsonify(class_results=results)
+    else:
+        return abort(404)
 
 
 """
