@@ -27,6 +27,15 @@ class Test_Testevaluation(unittest.TestCase):
             {'msg': 'ItWorksOnLocal Service'},
         )
 
+    def test_professor_endpoint(self):
+        pass
+
+    def test_summary_endpoint(self):
+        """Test that a summary is returned for a given professor"""
+        response = self.app.get('/summary?profname=Gail Kaiser')
+        print("this is the summary for Gail Kaiser")
+        print(response)
+
     def test_easy_endpoint(self):
         """Test easy API endpoint for ease information regarding a professor
            like lenient grading, recommend, etc"""
@@ -93,7 +102,7 @@ class Test_Testevaluation(unittest.TestCase):
         self.assertEqual(
             response.get_json(),
             {'professor_name': 'Aaron Fox',
-             'total_reviews': 6}
+             'total_reviews': 7}
         )
 
     """

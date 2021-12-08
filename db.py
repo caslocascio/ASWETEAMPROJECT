@@ -2,7 +2,6 @@ import sqlite3
 from sqlite3 import Error
 import csv
 import bitdotio
-from pprint import pprint
 
 '''
 This program db.py organizes the scraped culpa data into a database for
@@ -38,7 +37,8 @@ def init_db():
         b = bitdotio.bitdotio(api_key)
         conn = b.get_connection()
         cur = conn.cursor()
-        cur.execute("SELECT count(*) FROM \"WinstonZhang1999/CULPA\".\"culpadb\"")
+        cur.execute("SELECT count(*)\
+                    FROM \"WinstonZhang1999/CULPA\".\"culpadb\"")
         print(cur.fetchone())
 
     except Error as e:
@@ -96,9 +96,9 @@ def get_entry(entry, type):
         c = conn.cursor()
         print("connected to bitdotio")
 
-        sql_select_query = "SELECT * FROM \"WinstonZhang1999/CULPA\".culpadb" + \
+        sql_select_query = \
+            "SELECT * FROM \"WinstonZhang1999/CULPA\".culpadb" + \
             " WHERE "+type+"=\'"+str(entry)+"\'"
-        
         records = []
         c.execute(sql_select_query, (records))
         records = c.fetchall()
@@ -164,23 +164,6 @@ def get_entry_disagree(disagree):
 # enter funny rating as a string (typically between 1-5)
 def get_entry_funny(funny):
     return get_entry(funny, "funny")
-
-
-# clears database
-'''
-def clear():
-    conn = None
-    try:
-        conn = sqlite3.connect('sqlite_db')
-        conn.execute("DROP TABLE CULPADB")
-        print('Database Cleared')
-    except Error as e:
-        print(e)
-
-    finally:
-        if conn:
-            conn.close()
-'''
 
 
 if __name__ == '__main__':

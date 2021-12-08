@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 import db
 # import analysis commented out for use in second iter
-import random
 from sumy.parsers.plaintext import PlaintextParser
+import random
+import nltk 
+nltk.download('punkt')
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
 
@@ -32,8 +34,7 @@ note: random utilized here so a different review for a professor
 will be provided upon each call.This will make it easier for
 service utilizers to visualize needed information instead of bombarding
 with all reviews. If they wish for specific information
-regarding a professor such as if they are easy or provide extensions,
-please see '/easy' and '/extensions' endpoints.
+regarding a professor, please see other endpoints below.
 '''
 
 
@@ -44,10 +45,8 @@ def prof():
     # get review records from the database of this professor
     lst = db.get_entry_professor(profName)
     # return a random review from list
-    #num = random.randint(0, len(lst))
-    print(lst)
-    #return jsonify(entry=lst[num])
-    return jsonify(reviews=lst)
+    num = random.randint(0, len(lst))
+    return jsonify(reviews=lst[num])
 
 
 '''
@@ -72,7 +71,9 @@ def summary():
         parser = PlaintextParser.from_string(review, Tokenizer("english"))
         summarizer = LexRankSummarizer()
         summ = summarizer(parser.document, 1)
-        resultStr += summ
+        print("this is sum")
+        print(summ)
+        resultStr += (str(summ[0])+"\n")
 
     return jsonify(summary_of_reviews=resultStr)
 
@@ -81,7 +82,8 @@ def summary():
 '/easy' endpoint
 Method Type: GET
 return: # of students who mentioned prof is easy/has lenient grading/etc
-requires: desired professor name
+requires: desired professor name or course title
+note: user will use this endpoint for either prof or course in one query
 '''
 
 
@@ -91,8 +93,22 @@ requires: desired professor name
 def easy():
     # get professor name from request URL
     profName = request.args.get('profname')
-    # get review records from the database of this professor
-    lst = db.get_entry_professor(profName)
+    # get course title from request URL
+    course = request.args.get('course')
+
+    lst = []
+
+    # get review records from the database of this prof or class
+    if profName is not None and profName != "":
+        print("entered here for Aaron Fox")
+        lst = db.get_entry_professor(profName)
+        print("this is lst in the if statement")
+        print(lst)
+    elif course is not None and course != "":
+        lst = db.get_entry_class(course)
+
+    print("this is lst")
+    print(lst)
 
     # setting up variables to count instances of ease in entry
     easyA = 0
@@ -143,18 +159,35 @@ def final_exam():
     noFinal = 0
     takeHome = 0
     finPaper = 0
-    for i in range(0, len(lst)):
-        extract = lst[i]
+    for extract in lst:
         review = extract[3]
+        print("this is review")
+        print(review)
         workLoad = extract[4]
+        print("this is work")
+        print(workLoad)
 
-        if 'no final' in review or 'no final' in workLoad:
-            noFinal += 1
-        if 'take-home' in review or 'take-home' in workLoad:
-            takeHome += 1
-        if 'final paper' in review or 'final paper' in workLoad:
-            finPaper += 1
+        if not (review is None):
+            if 'no final' in review:
+                noFinal += 1
+            if 'take-home' in review:
+                takeHome += 1
+            if 'final paper' in review:
+                finPaper += 1
+
+        elif not (workLoad is None):
+            if 'no final' in workLoad:
+                noFinal += 1
+            if 'take-home' in workLoad:
+                takeHome += 1
+            if 'final paper' in workLoad:
+                finPaper += 1
+
     # no instances found
+    print("these are the vars in final")
+    print(noFinal)
+    print(takeHome)
+    print(finPaper)
     if noFinal == 0 and takeHome == 0 and finPaper == 0:
         return jsonify(final_exam='no indicator that class is final exam free')
     else:
@@ -182,13 +215,17 @@ def extensions():
 
     # setting up variable to count instances of extension in entry
     extension = 0
-    for i in range(0, len(lst)):
-        extract = lst[i]
+    for extract in lst:
         review = extract[3]
         workLoad = extract[4]
 
-        if 'extension' in review or 'extension' in workLoad:
-            extension += 1
+        if not (review is None):
+            if 'extension' in review:
+                extension += 1
+
+        elif not (workLoad is None):
+            if 'extension' in workLoad:
+                extension += 1
     # no instances found
     if extension == 0:
         return jsonify(extension_status='no indicator prof gives extensions')
