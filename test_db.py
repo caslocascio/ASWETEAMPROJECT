@@ -10,11 +10,11 @@ class Test_Testdb(unittest.TestCase):
     def test_get_prof(self):
         # test get_entry_prof from db, using 'Aaron Fox'
         # each entry should have the name of the prof at entry[0]
-        ls = db.get_entry_professor('Aaron Fox')
+        ls = db.get_entry_professor('Gail Kaiser')
         # print("this is ls prof")
         # print(ls)
         for entry in ls:
-            self.assertEqual(entry[0], 'Aaron Fox')
+            self.assertEqual(entry[0], 'Gail Kaiser')
 
     def test_get_class(self):
         # test get_entry_class from db, using 'Introduction to Urban Studies'
