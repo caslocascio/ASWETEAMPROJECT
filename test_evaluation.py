@@ -32,9 +32,10 @@ class Test_Testevaluation(unittest.TestCase):
 
     def test_summary_endpoint(self):
         """Test that a summary is returned for a given professor"""
-        response = self.app.get('/summary?profname=Gail Kaiser')
-        print("this is the summary for Gail Kaiser")
-        print(response)
+        pass
+
+    def test_get_easy(self):
+        pass
 
     def test_easy_endpoint(self):
         """Test easy API endpoint for ease information regarding a professor
@@ -51,6 +52,9 @@ class Test_Testevaluation(unittest.TestCase):
              'lenient_grading': 0,
              'I_recommend': 1}
         )
+
+    def test_get_final(self):
+        pass
 
     def test_final_endpoint(self):
         """Test final API endpoint for final information regarding a course
@@ -78,6 +82,9 @@ class Test_Testevaluation(unittest.TestCase):
             {'extension_status': 'no indicator prof gives extensions'}
         )
 
+    def test_get_difficulty():
+        pass
+
     def test_difficulty_endpoint(self):
         """Test difficulty API endpoint for difficulty information
            regarding a course like hard, boring, etc"""
@@ -104,6 +111,15 @@ class Test_Testevaluation(unittest.TestCase):
             {'professor_name': 'Aaron Fox',
              'total_reviews': 7}
         )
+
+    def test_find_class(self):
+        pass
+
+    def test_compare(self):
+        pass
+
+    def test_classes_endpoint(self):
+        pass
 
     """
     Commenting these two endpoints out as they need a bit more work

@@ -86,6 +86,10 @@ def summary():
         return abort(404)
 
 
+def get_easy():
+    pass
+
+
 '''
 '/easy' endpoint
 Method Type: GET
@@ -139,6 +143,10 @@ def easy():
                            lenient_grading=lenGrading, I_recommend=rec)
     else:
         return abort(404)
+
+
+def get_final():
+    pass
 
 
 '''
@@ -235,6 +243,10 @@ def extensions():
             return jsonify(extension=extension)
     else:
         return abort(404)
+
+
+def get_difficulty():
+    pass
 
 
 '''
@@ -361,9 +373,30 @@ def find_class(class_type):
     return results
 
 
+'''comparator returns courses in increasing order of comparison type'''
+
+
 # helper function to compare
-def compare(comparison_type, classes):
-    pass
+def compare(comparison_type, class_type):
+    # first get a list of classes based upon the class_type
+
+    classes = find_class(class_type)
+    sortedLst = []
+    for c in classes:
+        score = 0
+        if comparison_type == 'difficulty':
+            score = get_difficulty(c)
+        if comparison_type == 'easy':
+            score = get_easy(c)
+        if comparison_type == 'final':
+            score = get_final(c)
+
+        classScore = (c, score)
+        sortedLst.append(classScore)
+
+    # sort based off of score
+    sortedLst.sort(key=lambda x: x[1])
+    return sortedLst
 
 
 '''
