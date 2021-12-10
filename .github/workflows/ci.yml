@@ -36,4 +36,4 @@ jobs:
         flake8 . --count --exit-zero --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        python -m unittest test_scraper.py
+        python -m pytest --ignore="test_scraper.py" --ignore="test_evaluation"
