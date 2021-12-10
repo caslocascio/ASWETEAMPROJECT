@@ -191,6 +191,17 @@ class Test_Testevaluation(unittest.TestCase):
              'subjective_reviews': '16'}
         )
 
+    def test_recommend_professor(self):
+        """Test the API of recommend professor"""
+        response = self.app.get('/recommend_professor?course=User Interface Design')
+        # success response
+        self.assertEqual(200, response.status_code)
+        # check response message
+        self.assertEqual(
+            response.get_json(),
+            {'professor_name': 'Lydia Chilton'}
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
