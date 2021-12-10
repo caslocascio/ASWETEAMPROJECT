@@ -3,3 +3,5 @@ psycopg2-binary
 flask
 sumy
 bs4
+pandas
+textblob
