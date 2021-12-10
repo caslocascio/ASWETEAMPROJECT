@@ -94,7 +94,7 @@ def get_entry(entry, type):
         b = bitdotio.bitdotio(api_key)
         conn = b.get_connection()
         c = conn.cursor()
-        print("connected to bitdotio")
+        # print("connected to bitdotio")
 
         sql_select_query = \
             "SELECT * FROM \"WinstonZhang1999/CULPA\".culpadb" + \
@@ -119,15 +119,17 @@ def get_entry(entry, type):
 # get all entries
 def get_all():
     try:
-
-        conn = sqlite3.connect('sqlite_db')
-        conn.execute("SELECT * \"WinstonZhang1999/CULPA\".culpadb")
-        records = conn.fetchall()
+        b = bitdotio.bitdotio(api_key)
+        conn = b.get_connection()
+        c = conn.cursor()
+        c.execute("SELECT * FROM \"WinstonZhang1999/CULPA\".culpadb")
+        records = c.fetchall()
 
         entries = []
         for entry in records:
             entries.append(entry)
 
+        c.close()
         conn.close()
 
         return entries

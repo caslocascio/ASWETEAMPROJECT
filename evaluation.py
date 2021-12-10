@@ -3,10 +3,11 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
 from sumy.parsers.plaintext import PlaintextParser
 import db
-# import analysis commented out for use in second iter
+import analysis
 import random
 import nltk
 nltk.download('punkt')
+nltk.download('wordnet')
 
 
 app = Flask(__name__)
@@ -48,7 +49,7 @@ def prof():
     lst = db.get_entry_professor(profName)
     # return a random review from list
     if len(lst) > 0:
-        num = random.randint(0, len(lst))
+        num = random.randint(0, (len(lst) - 1))
         return jsonify(reviews=lst[num])
     else:
         return abort(404)
@@ -81,31 +82,12 @@ def summary():
         summarizer = LexRankSummarizer()
         # return a three sentence summary based upon all reviews for prof
         summ = summarizer(parser.document, 3)
-        return jsonify(summart_of_reviews=str(summ))
+        return jsonify(professor_name=profName, summary_of_reviews=str(summ))
     else:
         return abort(404)
 
 
-def get_easy():
-    pass
-
-
-'''
-'/easy' endpoint
-Method Type: GET
-return: # of students who mentioned prof is easy/has lenient grading/etc
-requires: desired professor name or course title
-note: user will use this endpoint for either prof or course in one query
-'''
-
-
-@app.route('/easy', methods=['GET'])
-def easy():
-    # get professor name from request URL
-    profName = request.args.get('profname')
-    # get course title from request URL
-    course = request.args.get('course')
-
+def get_easy(course, profName='', usage=1):
     lst = []
 
     # get review records from the database of this prof or class
@@ -126,42 +108,66 @@ def easy():
             review = extract[3]
             workLoad = extract[4]
 
-            if 'easy' in review or 'easy' in workLoad:
-                easyA += 1
-            if 'A+' in review or 'A+' in workLoad:
-                aPlus += 1
-            if 'lenient grading' in review or 'lenient grading' in workLoad:
-                lenGrading += 1
-            if 'I recommend' in review or 'I recommend' in workLoad:
-                rec += 1
-        # no instances found
-        if easyA == 0 and aPlus == 0 and lenGrading == 0 and rec == 0:
-            return jsonify(easy_status=False)
-        else:
-            # return counts of each ease phrase based on all reviews
-            return jsonify(easy_A=easyA, A_plus=aPlus,
-                           lenient_grading=lenGrading, I_recommend=rec)
+            if not (review is None):
+                if 'easy' in review:
+                    easyA += 1
+                if 'A+' in review:
+                    aPlus += 1
+                if 'lenient grading' in review:
+                    lenGrading += 1
+                if 'I recommend' in review:
+                    rec += 1
+
+            elif not (workLoad is None):
+                if 'easy' in workLoad:
+                    easyA += 1
+                if 'A+' in workLoad:
+                    aPlus += 1
+                if 'lenient grading' in workLoad:
+                    lenGrading += 1
+                if 'I recommend' in workLoad:
+                    rec += 1
+
     else:
         return abort(404)
 
+    easyLst = [easyA, aPlus, lenGrading, rec]
 
-def get_final():
-    pass
+    if usage == 1:
+        return easyLst
+    elif usage == 2:
+        score = easyA + aPlus + lenGrading + rec
+        return score
 
 
 '''
-'/final' endpoint
+'/easy' endpoint
 Method Type: GET
-return: # of students who mentioned course has no final/take home/final paper
-requires: desired course title
+return: # of students who mentioned prof is easy/has lenient grading/etc
+requires: desired professor name or course title
+note: user will use this endpoint for either prof or course in one query
 '''
 
 
-@app.route('/final', methods=['GET'])
-def final_exam():
+@app.route('/easy', methods=['GET'])
+def easy():
+    # get professor name from request URL
+    profName = request.args.get('profname')
     # get course title from request URL
     course = request.args.get('course')
 
+    eList = get_easy(course=course, profName=profName)
+
+    # no instances found
+    if eList[0] == 0 and eList[1] == 0 and eList[2] == 0 and eList[3] == 0:
+        return jsonify(easy_status=False)
+    else:
+        # return counts of each ease phrase based on all reviews
+        return jsonify(easy_A=eList[0], A_plus=eList[1],
+                       lenient_grading=eList[2], I_recommend=eList[3])
+
+
+def get_final(course, usage=1):
     lst = []
     # get review records from the database of this course
     lst = db.get_entry_class(course)
@@ -190,17 +196,40 @@ def final_exam():
                     takeHome += 1
                 if 'final paper' in workLoad:
                     finPaper += 1
-
-        # no instances found
-        if noFinal == 0 and takeHome == 0 and finPaper == 0:
-            return jsonify(final_exam='no indicator that class is\
-                                       final exam free')
-        else:
-            # return counts of each ease phrase based on all reviews
-            return jsonify(no_final_exam=noFinal, take_home=takeHome,
-                           final_paper=finPaper)
     else:
         return abort(404)
+
+    finalLst = [noFinal, takeHome, finPaper]
+
+    if usage == 1:
+        return finalLst
+    elif usage == 2:
+        score = noFinal + takeHome + finPaper
+        return score
+
+
+'''
+'/final' endpoint
+Method Type: GET
+return: # of students who mentioned course has no final/take home/final paper
+requires: desired course title
+'''
+
+
+@app.route('/final', methods=['GET'])
+def final_exam():
+    # get course title from request URL
+    course = request.args.get('course')
+
+    finLst = get_final(course)
+
+    # no instances found
+    if finLst[0] == 0 and finLst[1] == 0 and finLst[2] == 0:
+        return jsonify(final_exam='no sign class is final exam free')
+    else:
+        # return counts of each ease phrase based on all reviews
+        return jsonify(no_final_exam=finLst[0], take_home=finLst[1],
+                       final_paper=finLst[2])
 
 
 '''
@@ -236,8 +265,7 @@ def extensions():
                     extension += 1
         # no instances found
         if extension == 0:
-            return jsonify(extension_status='no indicator prof\
-                                             gives extensions')
+            return jsonify(extension_status='no sign prof gives extensions')
         else:
             # return counts of extension based on all reviews for professor
             return jsonify(extension=extension)
@@ -245,25 +273,7 @@ def extensions():
         return abort(404)
 
 
-def get_difficulty():
-    pass
-
-
-'''
-'/difficulty' endpoint
-Method Type: GET
-return: # of students who mentioned course has harsh grading/is boring/etc
-requires: desired course title
-'''
-
-
-@app.route('/difficulty', methods=['GET'])
-def difficulty():
-    # get course title from request URL
-    course = request.args.get('course')
-    # get professor name from reuqest URL
-    profName = request.args.get('profname')
-
+def get_difficulty(course, profName='', usage=1):
     lst = []
 
     # get review records from the database of this prof or class
@@ -283,24 +293,63 @@ def difficulty():
             review = extract[3]
             workLoad = extract[4]
 
-            if 'harsh grading' in review or 'harsh grading' in workLoad:
-                harshGrading += 1
-            if 'boring' in review or 'boring' in workLoad:
-                boring += 1
-            if 'hard' in review or 'hard' in workLoad:
-                hard += 1
-            if 'not recommend' in review or 'not recommend' in workLoad:
-                notRec += 1
-        # no instances found
-        if harshGrading == 0 and boring == 0 and hard == 0 and notRec == 0:
-            return jsonify(difficulty_status='no indicator course\
-                                              is too tough')
-        else:
-            # return counts of difficulty phrases based on all reviews
-            return jsonify(harsh_grading=harshGrading, boring=boring,
-                           hard=hard, not_recommended=notRec)
+            if not (review is None):
+                if 'harsh grading' in review:
+                    harshGrading += 1
+                if 'boring' in review:
+                    boring += 1
+                if 'hard' in review:
+                    hard += 1
+                if 'not recommend' in review:
+                    notRec += 1
+
+            elif not (workLoad is None):
+                if 'harsh grading' in workLoad:
+                    harshGrading += 1
+                if 'boring' in workLoad:
+                    boring += 1
+                if 'hard' in workLoad:
+                    hard += 1
+                if 'not recommend' in workLoad:
+                    notRec += 1
+
     else:
         return abort(404)
+
+    diffLst = [harshGrading, boring, hard, notRec]
+
+    if usage == 1:
+        return diffLst
+    elif usage == 2:
+        score = harshGrading + boring + hard + notRec
+        return score
+
+
+'''
+'/difficulty' endpoint
+Method Type: GET
+return: # of students who mentioned course has harsh grading/is boring/etc
+requires: desired course title
+'''
+
+
+@app.route('/difficulty', methods=['GET'])
+def difficulty():
+    # get course title from request URL
+    course = request.args.get('course')
+    # get professor name from reuqest URL
+    profName = request.args.get('profname')
+
+    diffLst = get_difficulty(course, profName)
+
+    # no instances found
+    if diffLst[0] == 0 and diffLst[1] == 0\
+       and diffLst[2] == 0 and diffLst[4] == 0:
+        return jsonify(difficulty_status='no sign course is too tough')
+    else:
+        # return counts of difficulty phrases based on all reviews
+        return jsonify(harsh_grading=diffLst[0], boring=diffLst[1],
+                       hard=diffLst[2], not_recommended=diffLst[3])
 
 
 '''
@@ -339,36 +388,40 @@ def find_class(class_type):
         # extracting course title from entry
         className = entry[1]
 
-        '''representing four different types of classes: art, computer science,
-           math and languages. We believe these are a diverse set of categories
-           which encapsulate numerous classes.
-        '''
+        if className is not None:
+            '''representing four different types of classes: art, computer science,
+               math and languages. We believe these are a diverse set of
+               categories which encapsulate numerous classes.
+            '''
 
-        if class_type == 'art':
-            artTypes = ['art', 'ceramics', 'painting',
-                        'drawing', 'photography']
-            for category in artTypes:
-                if category in className:
-                    results.append(entry)
+            if class_type == 'art':
+                artTypes = ['art', 'ceramics', 'painting',
+                            'drawing', 'photography']
+                for category in artTypes:
+                    if category in className:
+                        results.append(entry[1])
 
-        if class_type == 'computer science':
-            compsciTypes = ['computer science', 'computing',
-                            'artificial intelligence', 'machine learning']
-            for category in compsciTypes:
-                if category in className:
-                    results.append(entry)
+            if class_type == 'computer science':
+                compsciTypes = ['computer science', 'computing',
+                                'artificial intelligence', 'machine learning']
+                for category in compsciTypes:
+                    if category in className:
+                        results.append(entry[1])
 
-        if class_type == 'math':
-            mathTypes = ['math', 'calculus', 'statistics', 'algebra']
-            for category in mathTypes:
-                if category in className:
-                    results.append(entry)
+            if class_type == 'math':
+                mathTypes = ['Math', 'Calculus', 'Statistics', 'Algebra']
+                for category in mathTypes:
+                    if category in className:
+                        results.append(entry[1])
 
-        if class_type == 'language':
-            languageTypes = ['French', 'Spanish', 'Chinese', 'Italian']
-            for category in languageTypes:
-                if category in className:
-                    results.append(entry)
+            if class_type == 'language':
+                languageTypes = ['English', 'French', 'Spanish',
+                                 'Chinese', 'Italian', 'Arabic']
+                for category in languageTypes:
+                    if category in className:
+                        results.append(entry[1])
+        else:
+            continue
 
     return results
 
@@ -379,17 +432,16 @@ def find_class(class_type):
 # helper function to compare
 def compare(comparison_type, class_type):
     # first get a list of classes based upon the class_type
-
     classes = find_class(class_type)
     sortedLst = []
     for c in classes:
         score = 0
         if comparison_type == 'difficulty':
-            score = get_difficulty(c)
+            score = get_difficulty(course=c, usage=2)
         if comparison_type == 'easy':
-            score = get_easy(c)
+            score = get_easy(course=c, usage=2)
         if comparison_type == 'final':
-            score = get_final(c)
+            score = get_final(course=c, usage=2)
 
         classScore = (c, score)
         sortedLst.append(classScore)
@@ -403,7 +455,7 @@ def compare(comparison_type, class_type):
 'classes' endpoint
 Method Type: GET
 return: list of desired classes for given category
-requires: class type and desired professor name, course title, status, etc
+requires: class type and desired comparator style
 '''
 
 
@@ -411,34 +463,31 @@ requires: class type and desired professor name, course title, status, etc
 def classes():
     # get class type from request URL
     classType = request.args.get('classtype')
+    print("this is classType")
+    print(classType)
     # get comparator from request URL
     comparator = request.args.get('comparatortype')
+    print("this is comparatortype")
+    print(comparator)
 
     if classType is not None and comparator is not None:
         # call upon find_class()
-        classFinder = find_class(classType)
+        results = compare(comparator, classType)
         # conduct appropriate comparison
-        results = compare(comparator, classFinder)
         return jsonify(class_results=results)
     else:
         return abort(404)
 
 
-"""
-Commenting these two endpoints out as they need a bit more work
-which will be completed by the second iteration.
-"""
-
-"""
 '''
 '/review_ages/<date>' endpoint
-Method Type: POST
+Method Type: GET
 return: professor name along with the number of old/new reviews based upon date
 requires: desired professor name and date
 '''
 
 
-@app.route('/review_ages/<date>', methods=['POST'])
+@app.route('/review_ages/<date>', methods=['GET'])
 def review_ages(date):
     print('date:', date)
     # get professor name from request URL
@@ -454,8 +503,8 @@ def review_ages(date):
 '''
 '/sentiment' endpoint
 Method Type: GET
-return: sentiment analysis (eg. objective reviews) based upon professor
-requires: desired professor name
+return: sentiment analysis (eg. objective reviews) based on professor or course
+requires: desired professor or course name
 '''
 
 
@@ -463,8 +512,14 @@ requires: desired professor name
 def sentiment_analysis():
     # get professor name from request URL
     profName = request.args.get('profname')
-    # get review records from the database of this professor
-    lst = db.get_entry_professor(profName)
+    # get course title from request URL
+    course = request.args.get('course')
+    # get review records from the database of this prof or class
+    lst = []
+    if profName is not None and profName != "":
+        lst = db.get_entry_professor(profName)
+    elif course is not None and course != "":
+        lst = db.get_entry_class(course)
     # perform review analysis
     df, _, _, n_pos, n_neu, n_neg, n_obj, n_sub = analysis.review_analysis(lst)
     # rename columns
@@ -477,7 +532,7 @@ def sentiment_analysis():
                    neutral_reviews=str(n_neu), negative_reviews=str(n_neg),
                    objective_reviews=str(n_obj), subjective_reviews=str(n_sub),
                    details=review_dicts)
-"""
+
 
 if __name__ == '__main__':
     # run Flask app
