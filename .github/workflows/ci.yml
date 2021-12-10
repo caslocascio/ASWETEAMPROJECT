@@ -37,3 +37,7 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest --ignore="test_scraper.py" --ignore="test_evaluation.py"
+    - name: Check test coverage
+      run: |
+        coverage run -m pytest --ignore="test_scraper.py" --ignore="test_evaluation.py"
+        coverage report
