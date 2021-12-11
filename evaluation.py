@@ -587,7 +587,7 @@ def recommend_professor():
     
     best_professor = max(scores, key=scores.get)
 
-    return jsonify(professor_name= best_professor)
+    return jsonify(professor_name=best_professor)
 
 
 if __name__ == '__main__':
