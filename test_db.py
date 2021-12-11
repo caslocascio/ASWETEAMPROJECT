@@ -64,9 +64,10 @@ class Test_Testdb(unittest.TestCase):
         test_entry = ("test", "test", "test", "test", "test", "1", "1", "1")
         self.assertTrue(db.add_entry(test_entry))
 
+    '''
     def test_clear_db(self):
         self.assertTrue(db.clear())
-
+    '''
 
 if __name__ == '__main__':
     unittest.main()
