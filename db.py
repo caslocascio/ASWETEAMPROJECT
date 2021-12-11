@@ -1,7 +1,6 @@
-import sqlite3
-from sqlite3 import Error
 import csv
 import bitdotio
+from bitdotio import exceptions
 
 '''
 This program db.py organizes the scraped culpa data into a database for
@@ -12,7 +11,8 @@ reviews, workload, etc.
 '''
 
 csv_file_name = "culpa.csv"
-api_key = "PzCG_Njs6mZgCzDUUGyBywTZvnda"
+api_key = "Uqzc_MvTsXJAR8ts4ETv7r4nFasu"
+db_name = "qres_1d5e28b401604bcda36f18114fec4a22_db_writer"
 
 
 ''' each entry in the CULPADB table includes the professor name, class title,
@@ -22,53 +22,53 @@ feelings toward class and/or professor), and funny (students tend to be drawn
 to classes which include a sense of humor)'''
 
 
-# creates Table
+# creates the database
 def init_db():
-    conn = None
-    try:
-        '''
-        conn = sqlite3.connect('sqlite_db')
-        conn.execute('CREATE TABLE CULPADB(professor TEXT, class TEXT,' +
-                     'date TEXT, review TEXT, workload TEXT' +
-                     ', agree TEXT, disagree TEXT, funny TEXT)')
-        create_db()
-        print('Database Online, table created')
-        '''
-        b = bitdotio.bitdotio(api_key)
-        conn = b.get_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT count(*)\
-                    FROM \"WinstonZhang1999/CULPA\".\"culpadb\"")
-        print(cur.fetchone())
-
-    except Error as e:
-        print(e)
-
-    finally:
-        if conn:
-            conn.close()
+    #if less than 2, the db is empty
+    if len(get_all()) < 2:
+        return create_db()
+    else:
+        print("database already exists")
+        return True
 
 
 # reads aquired culpa data from csv into database
+# CAUTION: CREATE DB TAKES A VERY LONG TIME, DON'T CALL UNLESS 
+# DATABASE DOESN'T EXIST
 def create_db():
-    f = open(csv_file_name)
-    csvreader = csv.reader(f)
-    next(csvreader)
-    for row in csvreader:
-        add_entry(tuple(row))
+    try:
+        conn = bitdotio.bitdotio(api_key).get_connection().cursor()
+        f = open(csv_file_name)
+        csvreader = csv.reader(f)
+        query = "INSERT INTO \"WinstonZhang1999/CULPA\".culpadb VALUES" +\
+            " (%s,%s,%s,%s,%s,%s,%s,%s)"
+        next(csvreader)
+        for row in csvreader:
+            print("added: "+str(row))
+            conn.execute(query, row)
+            #add_entry(tuple(row))
+        conn.commit()
+        conn.close()
+        print('Database Online, table populated')
+        return True
+    except exceptions as e:
+        print(e)
+        return False
 
 
 # add entry into the database where entry is a tuple
 def add_entry(entry):
     try:
-        cleaned_entry = clean_string(entry)
-        conn = sqlite3.connect('sqlite_db')
-        conn.execute("INSERT INTO CULPADB VALUES "+str(cleaned_entry))
+        b = bitdotio.bitdotio(api_key)
+        conn = b.get_connection().cursor()
+        sql_select_query = "INSERT INTO \"WinstonZhang1999/CULPA\".culpadb VALUES" +\
+            " (%s,%s,%s,%s,%s,%s,%s,%s)" 
+        conn.execute(sql_select_query, entry)
         conn.commit()
         conn.close()
-        # print('database online, adding tuple: '+str(cleaned_entry))
+        print("succesfully added tuple: "+str(clean_tuple(entry)))
         return True
-    except Error as e:
+    except exceptions as e:
         print(e)
         return False
 
@@ -79,17 +79,23 @@ type can assume values like 'professor' or 'course'
 '''
 
 
-# removes all ' and " since they break sql
-def clean_string(entry):
+# escaping all ' and " for tuple since they break sql
+def clean_tuple(entry):
     arr = []
     for index in range(len(entry)):
         str = entry[index]
-        arr.append((str.replace('\'', '')).replace('\"', ''))
+        arr.append(clean_string(str))
     return tuple(arr)
+
+
+# escaping all ' and " for a string
+def clean_string(entry):
+    return (entry.replace('\'', '\''+'\'')).replace('\"', '\"'+'\"')
 
 
 # retrives entry from database based upon desired information
 def get_entry(entry, type):
+    entry = clean_string(entry)
     try:
         b = bitdotio.bitdotio(api_key)
         conn = b.get_connection()
@@ -111,7 +117,7 @@ def get_entry(entry, type):
         conn.close()
 
         return entries
-    except Error as e:
+    except exceptions as e:
         print(e)
         return None
 
@@ -133,9 +139,26 @@ def get_all():
         conn.close()
 
         return entries
-    except Error as e:
+    except exceptions as e:
         print(e)
         return None
+
+
+# clears the database
+# CAUTION: DO NOT CLEAR DB UNLESS NECESSARY, RECONSTRUCTION 
+# TAKES VERY LONG
+def clear():
+    conn = None
+    try:
+        conn = bitdotio.bitdotio(api_key).get_connection().cursor()
+        conn.execute("DELETE FROM \"WinstonZhang1999/CULPA\".culpadb")
+        print('Database Cleared')
+    except exceptions as e:
+        print(e)
+
+    finally:
+        if conn:
+            conn.close()
 
 
 # enter professor name

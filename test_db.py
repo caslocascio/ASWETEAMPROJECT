@@ -4,8 +4,7 @@ import db
 
 class Test_Testdb(unittest.TestCase):
     def setUp(self):
-        db.init_db()
-        return
+        self.assertTrue(db.init_db())
 
     def test_get_prof(self):
         # test get_entry_prof from db, using 'Aaron Fox'
@@ -61,6 +60,12 @@ class Test_Testdb(unittest.TestCase):
         for entry in ls:
             self.assertEqual(entry[6], 2)
 
+    def test_add_entry(self):
+        test_entry = ("test","test","test","test","test","test","test","test")
+        self.assertTrue(db.add_entry(test_entry))
 
+    def deconstruct(self):
+        self.assertTrue(db.clear())
+        
 if __name__ == '__main__':
     unittest.main()
