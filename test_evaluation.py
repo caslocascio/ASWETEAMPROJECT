@@ -199,7 +199,7 @@ class Test_Testevaluation(unittest.TestCase):
         # check response message
         self.assertEqual(
             response.get_json(),
-            {'professor_name': 'Lydia Chilton'}
+            {'professor_name': 'Brian Smith'}
         )
 
 

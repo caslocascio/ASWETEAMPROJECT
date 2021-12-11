@@ -8,6 +8,8 @@ import random
 import nltk
 nltk.download('punkt')
 nltk.download('wordnet')
+nltk.download('stopwords')
+
 
 
 app = Flask(__name__)
