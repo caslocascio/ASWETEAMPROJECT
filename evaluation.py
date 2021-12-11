@@ -536,6 +536,63 @@ def sentiment_analysis():
                    details=review_dicts)
 
 
+'''
+'/recommendProfessor' endpoint
+Method Type: GET
+return: name of the professor with the most positive sentiment out of all
+        professors for a specified course
+requires: desired course name
+'''
+
+
+@app.route('/recommendProfessor', methods=['GET'])
+def recommend_professor():
+
+    # get course title from request URL
+    course = request.args.get('course')
+
+    # get review records from the database of this class
+    course_reviews = []
+
+    if course is not None and course != "":
+        course_reviews = db.get_entry_class(course)
+
+    # get the professors that teach this course
+
+    professors_of_course = set()
+
+    for element in course_reviews:
+        professors_of_course.add(element[0])
+
+    # Dictionary maps each professor name to a score
+
+    scores = dict()
+
+    for professor in professors_of_course:
+
+        # get review records from the database of this professor
+        professor_reviews = []
+
+        if professor is not None and professor != "":
+            professor_reviews = db.get_entry_professor(professor)
+            # do a sentiment analysis on this professor
+            # give the prof a score
+            # based on diff of positive and negative reviews
+
+            sentiment_analysis = analysis.review_analysis(professor_reviews)
+
+            pos_rev_count = sentiment_analysis[3]
+            neg_rev_count = sentiment_analysis[4]
+
+            score = pos_rev_count - neg_rev_count
+
+            scores[professor] = score
+
+    best_professor = max(scores, key=scores.get)
+
+    return jsonify(professor_name=best_professor)
+
+
 if __name__ == '__main__':
     # run Flask app
     app.run(debug=True, host='127.0.0.1')
