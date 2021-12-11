@@ -11,7 +11,7 @@ filter_msg = ["enter the keyword for professor's name",
               "select a category",
               "select a difficulty",
               "select word load"]
-filter_legit_input = [None, None, ['math', 'art', 'engineering'],
+filter_legit_input = [None, None, ['math', 'computer science', 'art', 'language'],
                       ['easy', 'medium', 'hard'], ['light', 'medium', 'heavy']]
 
 
@@ -95,8 +95,14 @@ def menuSelectSource(filters: set) -> str:
     page = 0
     page_size = 20
     courses = [f"COMS{i:04d}" for i in range(200)]
-    for items in filters.keys():
-        print(items, filters.get(items))
+    if "category" and "filter" in filters.keys():
+        param1 = dict(classtype=filters.get("category"))
+        param2 = dict(comparatortype=filters.get("filter"))
+        resp = requests.get(url=URL+"/classes", params=param1, params=param2)
+        courses = resp.json()
+        print(f"Professor's Name: {courses['professor_name']}")
+        print(f"Total Reviews: {courses['total_reviews']}")
+
     pages = len(courses) // page_size
     if len(courses) % page_size:
         pages += 1
