@@ -3,16 +3,15 @@
 import requests
 URL = 'http://127.0.0.1:5000'
 
-filter_keys = ['prof', 'course', 'category', 'difficulty', 'workload']
+filter_keys = ['prof', 'course', 'category', 'comparator']
 filter_descriptor = ["Professor's Name", "Course Name",
-                     "Category", "Difficulty", "Work load"]
+                     "Category", "Comparator"]
 filter_msg = ["enter the keyword for professor's name",
               "enter the keyword for course name",
               "select a category",
-              "select a difficulty",
-              "select word load"]
+              "select a comparator"]
 filter_legit_input = [None, None, ['math', 'computer science', 'art', 'language'],
-                      ['easy', 'medium', 'hard'], ['light', 'medium', 'heavy']]
+                      ['difficulty', 'easy', 'final']]
 
 
 def printMessage(msg: str) -> None:
@@ -95,13 +94,24 @@ def menuSelectSource(filters: set) -> str:
     page = 0
     page_size = 20
     courses = [f"COMS{i:04d}" for i in range(200)]
+
+    if "prof" in filters.keys():
+        prof = filters.get("prof")
+        params = dict(profname=prof)
+        resp = requests.get(url=URL+"/total_reviews", params=params)
+        data = resp.json()
+    print(data)
+
+    if "course" in filters.keys():
+        courses.append(filters.get("course"))
+
     if "category" and "filter" in filters.keys():
-        param1 = dict(classtype=filters.get("category"))
-        param2 = dict(comparatortype=filters.get("filter"))
-        resp = requests.get(url=URL+"/classes", params=param1, params=param2)
+        params = dict(classtype=filters.get("category"), comparatortype=filters.get("filter"))
+        resp = requests.get(url=URL+"/classes", params=params)
         courses = resp.json()
         print(f"Professor's Name: {courses['professor_name']}")
         print(f"Total Reviews: {courses['total_reviews']}")
+
 
     pages = len(courses) // page_size
     if len(courses) % page_size:
