@@ -24,7 +24,7 @@ to classes which include a sense of humor)'''
 
 # creates the database
 def init_db():
-    #if less than 2, the db is empty
+    # if less than 2, the db is empty
     if len(get_all()) < 2:
         return create_db()
     else:
@@ -46,8 +46,6 @@ def create_db():
         for row in csvreader:
             print("added: "+str(row))
             conn.execute(query, row)
-            #add_entry(tuple(row))
-        conn.commit()
         conn.close()
         print('Database Online, table populated')
         return True
@@ -64,7 +62,6 @@ def add_entry(entry):
         sql_select_query = "INSERT INTO \"WinstonZhang1999/CULPA\".culpadb VALUES" +\
             " (%s,%s,%s,%s,%s,%s,%s,%s)" 
         conn.execute(sql_select_query, entry)
-        conn.commit()
         conn.close()
         print("succesfully added tuple: "+str(clean_tuple(entry)))
         return True
@@ -90,7 +87,7 @@ def clean_tuple(entry):
 
 # escaping all ' and " for a string
 def clean_string(entry):
-    return (entry.replace('\'', '\''+'\'')).replace('\"', '\"'+'\"')
+    return (str(entry).replace('\'', '\''+'\'')).replace('\"', '\"'+'\"')
 
 
 # retrives entry from database based upon desired information
@@ -155,10 +152,12 @@ def clear():
         print('Database Cleared')
     except exceptions as e:
         print(e)
+        return False
 
     finally:
         if conn:
             conn.close()
+            return True
 
 
 # enter professor name
