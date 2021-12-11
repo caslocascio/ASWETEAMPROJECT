@@ -1,0 +1,92 @@
+{
+	"id": "0a986009-dd25-472d-b9a0-132d968362f3",
+	"name": "WorkLoad Expectations",
+	"timestamp": "2021-12-11T22:32:13.267Z",
+	"collection_id": "18347402-054140de-addf-402e-b668-fd426b95f07c",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 4,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "d56ef825-a4a8-405a-b224-3b7ecbd529e0",
+			"name": "final",
+			"url": "http://127.0.0.1:5000/final?course=Intro%20to%20Psychology",
+			"time": 583,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Intro to Psychology is in-class final exam free": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Intro to Psychology is in-class final exam free": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				583
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Intro to Psychology is in-class final exam free": true
+				}
+			]
+		},
+		{
+			"id": "6f0a673d-0d5c-4286-b013-3908dacfb21a",
+			"name": "extensions",
+			"url": "http://127.0.0.1:5000/extensions?profname=Eugene%20Wu",
+			"time": 545,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				545
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body matches string": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1128,
+	"collection": {
+		"requests": [
+			{
+				"id": "d56ef825-a4a8-405a-b224-3b7ecbd529e0",
+				"method": "GET"
+			},
+			{
+				"id": "6f0a673d-0d5c-4286-b013-3908dacfb21a",
+				"method": "GET"
+			}
+		]
+	}
+}

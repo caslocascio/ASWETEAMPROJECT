@@ -1,0 +1,55 @@
+{
+	"id": "ddfb553c-a387-4382-9dd3-3b2675e10204",
+	"name": "Hello World: First Interactions with Service",
+	"timestamp": "2021-12-11T22:31:32.586Z",
+	"collection_id": "18347402-4e6d6cb4-63b2-490a-a726-163f722ae9c7",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 2,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "cbd82394-927b-4747-9468-8cc4da3ee7b5",
+			"name": "hello world",
+			"url": "http://127.0.0.1:5000/",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body matches string": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 6,
+	"collection": {
+		"requests": [
+			{
+				"id": "cbd82394-927b-4747-9468-8cc4da3ee7b5",
+				"method": "GET"
+			}
+		]
+	}
+}

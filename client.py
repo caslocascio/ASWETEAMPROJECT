@@ -10,7 +10,8 @@ filter_msg = ["enter the keyword for professor's name",
               "enter the keyword for course name",
               "select a classtype",
               "select a comparatortype"]
-filter_legit_input = [None, None, ['math', 'computer science', 'art', 'language'],
+filter_legit_input = [None, None, ['math', 'computer science', 'art',
+                                   'language'],
                       ['difficulty', 'easy', 'final']]
 
 
@@ -106,13 +107,13 @@ def menuSelectSource(filters: set) -> str:
         courses.append(filters.get("course"))
 
     if "classtype" and "comparatortype" in filters.keys():
-        p = {'classtype:': str(filters.get("classtype")), 'comparatortype:': str(filters.get("comparatortype"))}
+        p = {'classtype:': str(filters.get("classtype")),
+             'comparatortype:': str(filters.get("comparatortype"))}
         resp = requests.get(url=URL+"/classes", params=p)
         print(resp)
         courses = resp.json()
-        print(f"Professor's Name: {courses['professor_name']}")
-        print(f"Total Reviews: {courses['total_reviews']}")
-
+        # print(f"Professor's Name: {courses['professor_name']}")
+        # print(f"Total Reviews: {courses['total_reviews']}")
 
     pages = len(courses) // page_size
     if len(courses) % page_size:

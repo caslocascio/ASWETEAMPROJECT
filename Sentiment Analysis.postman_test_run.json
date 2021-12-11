@@ -1,0 +1,92 @@
+{
+	"id": "6c06f7b8-3e96-4265-b7db-38370a11b6c0",
+	"name": "Sentiment Analysis",
+	"timestamp": "2021-12-11T22:32:04.108Z",
+	"collection_id": "18366826-b3936bb9-3726-4a05-8fb3-cdb2755c99cf",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 4,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "5b071182-be7f-4e85-9342-fb540f3556b0",
+			"name": "Sentiment Professor",
+			"url": "http://127.0.0.1:5000/sentiment?profname=Aaron%20Fox",
+			"time": 789,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Sentiment Analysis for Professor Aaron Fox": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Sentiment Analysis for Professor Aaron Fox": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				789
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Sentiment Analysis for Professor Aaron Fox": true
+				}
+			]
+		},
+		{
+			"id": "b338ae28-42e5-4ad0-927c-d14858709eed",
+			"name": "Sentiment Course",
+			"url": "http://127.0.0.1:5000//sentiment?course=Methods%20and%20Problems%20of%20Philosophical%20Thought",
+			"time": 769,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Sentiment Analysis for Course-Methods and Problems of Philosophical Thought": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Sentiment Analysis for Course-Methods and Problems of Philosophical Thought": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				769
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Sentiment Analysis for Course-Methods and Problems of Philosophical Thought": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1558,
+	"collection": {
+		"requests": [
+			{
+				"id": "5b071182-be7f-4e85-9342-fb540f3556b0",
+				"method": "GET"
+			},
+			{
+				"id": "b338ae28-42e5-4ad0-927c-d14858709eed",
+				"method": "GET"
+			}
+		]
+	}
+}
