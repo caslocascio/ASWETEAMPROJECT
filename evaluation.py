@@ -275,7 +275,7 @@ def extensions():
         return abort(404)
 
 
-def get_difficulty(course, profName='', usage=1):
+def get_difficulty(course='', profName='', usage=1):
     lst = []
 
     # get review records from the database of this prof or class
@@ -346,7 +346,7 @@ def difficulty():
 
     # no instances found
     if diffLst[0] == 0 and diffLst[1] == 0\
-       and diffLst[2] == 0 and diffLst[4] == 0:
+       and diffLst[2] == 0 and diffLst[3] == 0:
         return jsonify(difficulty_status='no sign course is too tough')
     else:
         # return counts of difficulty phrases based on all reviews
@@ -386,6 +386,7 @@ def find_class(class_type):
     # creating a results list to hold classes for comparison
     results = []
 
+    count = 0
     for entry in allEntries:
         # extracting course title from entry
         className = entry[1]
@@ -397,34 +398,40 @@ def find_class(class_type):
             '''
 
             if class_type == 'art':
-                artTypes = ['art', 'ceramics', 'painting',
-                            'drawing', 'photography']
+                artTypes = ['Art', 'Ceramics', 'Painting',
+                            'Drawing', 'Photography']
                 for category in artTypes:
-                    if category in className:
+                    if category in className and entry[1] not in results:
                         results.append(entry[1])
+                        count += 1
 
             if class_type == 'computer science':
-                compsciTypes = ['computer science', 'computing',
-                                'artificial intelligence', 'machine learning']
+                compsciTypes = ['Computer Science', 'Computing',
+                                'Artificial Intelligence', 'Machine Learning']
                 for category in compsciTypes:
-                    if category in className:
+                    if category in className and entry[1] not in results:
                         results.append(entry[1])
+                        count += 1
 
             if class_type == 'math':
                 mathTypes = ['Math', 'Calculus', 'Statistics', 'Algebra']
                 for category in mathTypes:
-                    if category in className:
+                    if category in className and entry[1] not in results:
                         results.append(entry[1])
+                        count += 1
 
             if class_type == 'language':
                 languageTypes = ['English', 'French', 'Spanish',
                                  'Chinese', 'Italian', 'Arabic']
                 for category in languageTypes:
-                    if category in className:
+                    if category in className and entry[1] not in results:
                         results.append(entry[1])
+                        count += 1
+
+            if count == 5:
+                break
         else:
             continue
-
     return results
 
 
@@ -465,12 +472,8 @@ requires: class type and desired comparator style
 def classes():
     # get class type from request URL
     classType = request.args.get('classtype')
-    print("this is classType")
-    print(classType)
     # get comparator from request URL
     comparator = request.args.get('comparatortype')
-    print("this is comparatortype")
-    print(comparator)
 
     if classType is not None and comparator is not None:
         # call upon find_class()

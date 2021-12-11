@@ -1,6 +1,5 @@
 import csv
 import bitdotio
-from bitdotio import exceptions
 
 '''
 This program db.py organizes the scraped culpa data into a database for
@@ -33,7 +32,7 @@ def init_db():
 
 
 # reads aquired culpa data from csv into database
-# CAUTION: CREATE DB TAKES A VERY LONG TIME, DON'T CALL UNLESS 
+# CAUTION: CREATE DB TAKES A VERY LONG TIME, DON'T CALL UNLESS
 # DATABASE DOESN'T EXIST
 def create_db():
     try:
@@ -49,7 +48,7 @@ def create_db():
         conn.close()
         print('Database Online, table populated')
         return True
-    except exceptions as e:
+    except Exception as e:
         print(e)
         return False
 
@@ -59,13 +58,14 @@ def add_entry(entry):
     try:
         b = bitdotio.bitdotio(api_key)
         conn = b.get_connection().cursor()
-        sql_select_query = "INSERT INTO \"WinstonZhang1999/CULPA\".culpadb VALUES" +\
-            " (%s,%s,%s,%s,%s,%s,%s,%s)" 
+        sql_select_query = "INSERT INTO \"WinstonZhang1999/CULPA\".culpadb\
+             VALUES" +\
+            " (%s,%s,%s,%s,%s,%s,%s,%s)"
         conn.execute(sql_select_query, entry)
         conn.close()
         print("succesfully added tuple: "+str(clean_tuple(entry)))
         return True
-    except exceptions as e:
+    except Exception as e:
         print(e)
         return False
 
@@ -114,7 +114,7 @@ def get_entry(entry, type):
         conn.close()
 
         return entries
-    except exceptions as e:
+    except Exception as e:
         print(e)
         return None
 
@@ -136,13 +136,13 @@ def get_all():
         conn.close()
 
         return entries
-    except exceptions as e:
+    except Exception as e:
         print(e)
         return None
 
 
 # clears the database
-# CAUTION: DO NOT CLEAR DB UNLESS NECESSARY, RECONSTRUCTION 
+# CAUTION: DO NOT CLEAR DB UNLESS NECESSARY, RECONSTRUCTION
 # TAKES VERY LONG
 def clear():
     conn = None
@@ -150,7 +150,7 @@ def clear():
         conn = bitdotio.bitdotio(api_key).get_connection().cursor()
         conn.execute("DELETE FROM \"WinstonZhang1999/CULPA\".culpadb")
         print('Database Cleared')
-    except exceptions as e:
+    except Exception as e:
         print(e)
         return False
 
