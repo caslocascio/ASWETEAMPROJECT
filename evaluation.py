@@ -15,6 +15,7 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 nltk.download('punkt')
 nltk.download('wordnet')
+nltk.download('stopwords')
 
 
 app = Flask(__name__)
