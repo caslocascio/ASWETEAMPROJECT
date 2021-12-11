@@ -68,6 +68,6 @@ class Test_Testdb(unittest.TestCase):
     def test_clear_db(self):
         self.assertTrue(db.clear())
     '''
-
+    
 if __name__ == '__main__':
     unittest.main()

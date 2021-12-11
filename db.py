@@ -11,7 +11,7 @@ reviews, workload, etc.
 '''
 
 csv_file_name = "culpa.csv"
-api_key = "Uqzc_MvTsXJAR8ts4ETv7r4nFasu"
+api_key = "UsaA_8UHMCxDTQV483vLM469EpXm"
 db_name = "qres_1d5e28b401604bcda36f18114fec4a22_db_writer"
 
 
