@@ -5,3 +5,4 @@ sumy
 bs4
 pandas
 textblob
+coverage
