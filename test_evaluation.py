@@ -193,7 +193,8 @@ class Test_Testevaluation(unittest.TestCase):
 
     def test_recommend_professor(self):
         """Test the API of recommend professor"""
-        response = self.app.get('/recommendProfessor?course=User Interface Design')
+        response = self.app.get(
+            '/recommendProfessor?course=User Interface Design')
         # success response
         self.assertEqual(200, response.status_code)
         # check response message

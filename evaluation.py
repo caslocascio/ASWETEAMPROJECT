@@ -11,7 +11,6 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 
-
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
@@ -539,7 +538,8 @@ def sentiment_analysis():
 '''
 '/recommendProfessor' endpoint
 Method Type: GET
-return: name of the professor with the most positive sentiment out of all professors for a specified course
+return: name of the professor with the most positive sentiment out of all
+        professors for a specified course
 requires: desired course name
 '''
 
@@ -574,9 +574,9 @@ def recommend_professor():
 
         if professor is not None and professor != "":
             professor_reviews = db.get_entry_professor(professor)
-            
             # do a sentiment analysis on this professor
-            # give the professor a score based on difference of positive and negative reviews
+            # give the prof a score
+            # based on diff of positive and negative reviews
 
             sentiment_analysis = analysis.review_analysis(professor_reviews)
 
@@ -586,7 +586,7 @@ def recommend_professor():
             score = pos_rev_count - neg_rev_count
 
             scores[professor] = score
-    
+
     best_professor = max(scores, key=scores.get)
 
     return jsonify(professor_name=best_professor)
