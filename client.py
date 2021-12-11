@@ -95,6 +95,8 @@ def menuSelectSource(filters: set) -> str:
     page = 0
     page_size = 20
     courses = [f"COMS{i:04d}" for i in range(200)]
+    for items in filters.keys():
+        print(items, filters.get(items))
     pages = len(courses) // page_size
     if len(courses) % page_size:
         pages += 1
