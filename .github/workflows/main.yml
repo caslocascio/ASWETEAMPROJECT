@@ -27,7 +27,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
-        python -c "import nltk; import ssl; _create_unverified_https_context = ssl._create_unverified_context; ssl._create_default_https_context = _create_unverified_https_context; nltk.download('punkt'); nltk.download('wordnet')
+        python -c "import nltk; import ssl; _create_unverified_https_context = ssl._create_unverified_context; ssl._create_default_https_context = _create_unverified_https_context; nltk.download('punkt'); nltk.download('wordnet')"
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
