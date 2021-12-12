@@ -61,7 +61,7 @@ def add_entry(entry):
         sql_select_query = "INSERT INTO \"WinstonZhang1999/CULPA\".culpadb\
              VALUES" +\
             " (%s,%s,%s,%s,%s,%s,%s,%s)"
-        conn.execute(sql_select_query, entry)
+        conn.execute(sql_select_query, (entry))
         conn.close()
         print("succesfully added tuple: "+str(clean_tuple(entry)))
         return True
@@ -144,6 +144,7 @@ def get_all():
 # clears the database
 # CAUTION: DO NOT CLEAR DB UNLESS NECESSARY, RECONSTRUCTION
 # TAKES VERY LONG
+'''
 def clear():
     conn = None
     try:
@@ -158,7 +159,7 @@ def clear():
         if conn:
             conn.close()
             return True
-
+'''
 
 # enter professor name
 def get_entry_professor(professor):
