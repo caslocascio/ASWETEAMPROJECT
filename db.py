@@ -144,7 +144,6 @@ def get_all():
 # clears the database
 # CAUTION: DO NOT CLEAR DB UNLESS NECESSARY, RECONSTRUCTION
 # TAKES VERY LONG
-'''
 def clear():
     conn = None
     try:
@@ -159,7 +158,7 @@ def clear():
         if conn:
             conn.close()
             return True
-'''
+
 
 # enter professor name
 def get_entry_professor(professor):
@@ -192,4 +191,5 @@ def get_entry_funny(funny):
 
 
 if __name__ == '__main__':
+    clear()
     init_db()

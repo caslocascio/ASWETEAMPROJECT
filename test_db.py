@@ -65,6 +65,9 @@ class Test_Testdb(unittest.TestCase):
         self.assertTrue(db.add_entry(test_entry))
 
     '''
+    # this will clear all entries in the db
+    # this works already, but don't call it because it takes a long time
+    # to reconstruct the table...
     def test_clear_db(self):
         self.assertTrue(db.clear())
     '''
