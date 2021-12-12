@@ -58,7 +58,6 @@ jobs:
     - name: Install newman
       run: |
        npm install -g newman
-       npm install -g newman-reporter-htmlextra
 
     # Make directory to upload the test results
     - name: Make Directory for results
@@ -67,7 +66,7 @@ jobs:
     # Run the POSTMAN collection
     - name: Run POSTMAN collection
       run: |
-       newman run ./PostmanCollections/class-finder.json -r htmlextra --reporter-htmlextra-export testResultsKasim/htmlreport.html --reporter-htmlextra-darkTheme  > testResultsKasim/runreport1.html
+       newman run ./PostmanCollections/class-finder.json > testResultsKasim/runreport1.json
 
     # Upload the contents of Test Results directory to workspace
     - name: Output the run Details
