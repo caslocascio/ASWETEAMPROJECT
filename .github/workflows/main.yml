@@ -28,6 +28,16 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    # Install Node.js environment
+    - name: set up node
+      uses: actions/setup-node@v1
+      with:
+          node-version: '12.x'
+    # Install newman
+    - name: Install newman
+      run: |
+       npm install -g newman
+       npm install -g newman-reporter-htmlextra
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
