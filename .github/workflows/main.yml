@@ -6,7 +6,7 @@ name: CI
 on:
   push:
     branches:
-      - 'main'
+      - 'postman'
 
 jobs:
   build:
@@ -47,7 +47,19 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       
+    - name: Run Local Server
+      run: |
+        python evaluation.py
     # Install Node on the runner
     - name: Install Node
       uses: actions/setup-node@v1
