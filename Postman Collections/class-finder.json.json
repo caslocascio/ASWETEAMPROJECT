@@ -1,0 +1,302 @@
+{
+  "info": {
+    "_postman_id": "d90d68d2-bc16-45ce-903e-93d65075577c",
+    "name": "Class Finder",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "classes",
+      "item": [
+        {
+          "name": "math",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ac85d8ea-9a85-4586-a20f-47005a5a499d",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"5 Math Classes Comparator Type Easy\", () => {",
+                  "  const responseJson = pm.response.json();",
+                  "  pm.expect(responseJson.class_results[0]).to.eql(['Principles of Applied Mathematics', 0]);",
+                  "  pm.expect(responseJson.class_results[1]).to.eql(['Math Methods: Financial Price Analysis', 0]);",
+                  "  pm.expect(responseJson.class_results[2]).to.eql(['Calculus I', 9]);",
+                  "  pm.expect(responseJson.class_results[3]).to.eql(['Discrete Mathematics', 11]);",
+                  "  pm.expect(responseJson.class_results[4]).to.eql(['Calculus III', 33]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "3844ea9e-c45a-41ff-80a4-936aacd978ea",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/classes?classtype=math&comparatortype=easy",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "classes"
+              ],
+              "query": [
+                {
+                  "key": "classtype",
+                  "value": "math"
+                },
+                {
+                  "key": "comparatortype",
+                  "value": "easy"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "computer science",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7321f4ed-87fd-4a54-be10-1fc2ffcfc817",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"5 Computer Science Classes Comparator Type Final\", () => {",
+                  "  const responseJson = pm.response.json();",
+                  "  pm.expect(responseJson.class_results[0]).to.eql(['Computer Science Theory: Computability - Models - Computation', 0]);",
+                  "  pm.expect(responseJson.class_results[1]).to.eql(['Intro to Computer Science- Programming in Java', 0]);",
+                  "  pm.expect(responseJson.class_results[2]).to.eql(['Intro to Computer Science- Programming in C', 0]);",
+                  "  pm.expect(responseJson.class_results[3]).to.eql(['Applied Machine Learning', 0]);",
+                  "  pm.expect(responseJson.class_results[4]).to.eql(['Artificial Intelligence', 0]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "2c7d6710-4bcc-44cd-a761-33f38a20ee44",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/classes?classtype=computer science&comparatortype=final",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "classes"
+              ],
+              "query": [
+                {
+                  "key": "classtype",
+                  "value": "computer science"
+                },
+                {
+                  "key": "comparatortype",
+                  "value": "final"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "art",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6be2ec50-92af-4c7b-84da-d30f87cedce0",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"5 Art Classes Comparator Type Difficulty\", () => {",
+                  "  const responseJson = pm.response.json();",
+                  "  pm.expect(responseJson.class_results[0]).to.eql(['Art of the Essay', 0]);",
+                  "  pm.expect(responseJson.class_results[1]).to.eql(['Late 20th Century Art', 0]);",
+                  "  pm.expect(responseJson.class_results[2]).to.eql(['Introduction to the History of Photography', 1]);",
+                  "  pm.expect(responseJson.class_results[3]).to.eql(['W3650 20th Century Art', 1]);",
+                  "  pm.expect(responseJson.class_results[4]).to.eql(['20th Century Art', 2]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "ce36fc2d-647d-4385-87d4-11f70c9c67ca",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/classes?classtype=art&comparatortype=difficulty",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "classes"
+              ],
+              "query": [
+                {
+                  "key": "classtype",
+                  "value": "art"
+                },
+                {
+                  "key": "comparatortype",
+                  "value": "difficulty"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "language",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e6055ad3-f3ba-4eea-9592-3ea61552d6ae",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"5 Language Classes Comparator Type Difficulty\", () => {",
+                  "  const responseJson = pm.response.json();",
+                  "  pm.expect(responseJson.class_results[0]).to.eql(['First-Year Arabic I', 0]);",
+                  "  pm.expect(responseJson.class_results[1]).to.eql(['V1101-V1102 Elementary Spanish', 0]);",
+                  "  pm.expect(responseJson.class_results[2]).to.eql(['Elementary French I', 2]);",
+                  "  pm.expect(responseJson.class_results[3]).to.eql(['First-Year English', 3]);",
+                  "  pm.expect(responseJson.class_results[4]).to.eql(['English Colloquium: Skepticism and Affirmation', 3]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "f7a6fb7d-05f6-4ae5-aca6-a345e5e05a33",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/classes?classtype=language&comparatortype=difficulty",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "classes"
+              ],
+              "query": [
+                {
+                  "key": "classtype",
+                  "value": "language"
+                },
+                {
+                  "key": "comparatortype",
+                  "value": "difficulty"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "bfc76815-2362-417a-be24-01142460d2ac"
+    },
+    {
+      "name": "Recommend Professor",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "24549f53-8775-4fdd-aa77-1fb1939097e2",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Best professor for User Interface Design is Brian Smith\", () => {",
+              "  const responseJson = pm.response.json();",
+              "  pm.expect(responseJson.professor_name).to.eql(\"Brian Smith\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "f30337b3-a1cd-4948-87bb-e0b446494f32",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/recommendProfessor?course=User Interface Design",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "recommendProfessor"
+          ],
+          "query": [
+            {
+              "key": "course",
+              "value": "User Interface Design"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
