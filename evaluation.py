@@ -560,40 +560,45 @@ def recommend_professor():
     if course is not None and course != "":
         course_reviews = db.get_entry_class(course)
 
-    # get the professors that teach this course
+    if len(course_reviews) > 0:
 
-    professors_of_course = set()
+        # get the professors that teach this course
 
-    for element in course_reviews:
-        professors_of_course.add(element[0])
+        professors_of_course = set()
 
-    # Dictionary maps each professor name to a score
+        for element in course_reviews:
+            professors_of_course.add(element[0])
 
-    scores = dict()
+        # Dictionary maps each professor name to a score
 
-    for professor in professors_of_course:
+        scores = dict()
 
-        # get review records from the database of this professor
-        professor_reviews = []
+        for professor in professors_of_course:
 
-        if professor is not None and professor != "":
-            professor_reviews = db.get_entry_professor(professor)
-            # do a sentiment analysis on this professor
-            # give the prof a score
-            # based on diff of positive and negative reviews
+            # get review records from the database of this professor
+            prof_reviews = []
 
-            sentiment_analysis = analysis.review_analysis(professor_reviews)
+            if professor is not None and professor != "":
+                prof_reviews = db.get_entry_professor(professor)
+                # do a sentiment analysis on this professor
+                # give the prof a score
+                # based on diff of positive and negative reviews
 
-            pos_rev_count = sentiment_analysis[3]
-            neg_rev_count = sentiment_analysis[4]
+                sentiment_analysis = analysis.review_analysis(prof_reviews)
 
-            score = pos_rev_count - neg_rev_count
+                pos_rev_count = sentiment_analysis[3]
+                neg_rev_count = sentiment_analysis[4]
 
-            scores[professor] = score
+                score = pos_rev_count - neg_rev_count
 
-    best_professor = max(scores, key=scores.get)
+                scores[professor] = score
 
-    return jsonify(professor_name=best_professor)
+        best_professor = max(scores, key=scores.get)
+
+        return jsonify(professor_name=best_professor)
+
+    else:
+        return abort(404)
 
 
 if __name__ == '__main__':
