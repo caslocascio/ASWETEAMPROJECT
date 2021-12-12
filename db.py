@@ -61,7 +61,7 @@ def add_entry(entry):
         sql_select_query = "INSERT INTO \"WinstonZhang1999/CULPA\".culpadb\
              VALUES" +\
             " (%s,%s,%s,%s,%s,%s,%s,%s)"
-        conn.execute(sql_select_query, (entry))
+        conn.execute(sql_select_query, entry)
         conn.close()
         print("succesfully added tuple: "+str(clean_tuple(entry)))
         return True
