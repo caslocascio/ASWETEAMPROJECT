@@ -3,15 +3,11 @@
 import requests
 URL = 'http://127.0.0.1:5000'
 
-filter_keys = ['prof', 'course', 'classtype', 'comparatortype']
-filter_descriptor = ["Professor's Name", "Course Name",
-                     "classtype", "comparatortype"]
-filter_msg = ["enter the keyword for professor's name",
-              "enter the keyword for course name",
-              "select a classtype",
+filter_keys = ['classtype', 'comparatortype']
+filter_descriptor = ["classtype", "comparatortype"]
+filter_msg = ["select a classtype",
               "select a comparatortype"]
-filter_legit_input = [None, None, ['math', 'computer science', 'art',
-                                   'language'],
+filter_legit_input = [['math', 'computer science', 'art', 'language'],
                       ['difficulty', 'easy', 'final']]
 
 
@@ -74,7 +70,8 @@ def menuSelectFilter() -> dict:
             print(f"{i+1}) {filter_descriptor[i]} " +
                   f"({filters.get(filter, 'empty')})")
 
-        if len(filters) > 0:
+        if len(filters) == 2:
+            # classtype and comparatortype are filled
             print("a) Apply filter and search")
         print("b) Back")
         print("please select a filter: ", end="")
@@ -93,27 +90,18 @@ def menuSelectFilter() -> dict:
 
 def menuSelectSource(filters: set) -> str:
     page = 0
-    page_size = 20
-    courses = [f"COMS{i:04d}" for i in range(200)]
-
-    if "prof" in filters.keys():
-        prof = filters.get("prof")
-        params = dict(profname=prof)
-        resp = requests.get(url=URL+"/total_reviews", params=params)
-        data = resp.json()
-        print(data)
-
-    if "course" in filters.keys():
-        courses.append(filters.get("course"))
+    page_size = 10
+    courses = []
 
     if "classtype" and "comparatortype" in filters.keys():
-        p = {'classtype:': str(filters.get("classtype")),
-             'comparatortype:': str(filters.get("comparatortype"))}
+        p = {'classtype': str(filters.get("classtype")),
+             'comparatortype': str(filters.get("comparatortype"))}
         resp = requests.get(url=URL+"/classes", params=p)
-        print(resp)
-        courses = resp.json()
-        # print(f"Professor's Name: {courses['professor_name']}")
-        # print(f"Total Reviews: {courses['total_reviews']}")
+        courses = resp.json()['class_results']
+
+    if len(courses) == 0:
+        print("No courses found")
+        return None
 
     pages = len(courses) // page_size
     if len(courses) % page_size:
@@ -121,7 +109,7 @@ def menuSelectSource(filters: set) -> str:
 
     while True:
         for i in range(page_size*page, min(page_size*(page+1), len(courses))):
-            print(f"{i+1:4d}) {courses[i]}")
+            print(f"{i+1:4d}) {courses[i][0]} (score: {courses[i][1]})")
 
         if page > 0:
             print("p) previous page")
@@ -140,7 +128,7 @@ def menuSelectSource(filters: set) -> str:
         elif cmd.isnumeric():
             id = int(cmd) - 1
             if id < len(courses):
-                return courses[id]
+                return courses[id][0]
             else:
                 printMessage("invalid input")
         else:
