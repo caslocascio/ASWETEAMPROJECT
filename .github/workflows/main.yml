@@ -28,9 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run Local Server
-      run: |
-        python evaluation.py &
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -51,6 +48,9 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       
+    - name: Run Local Server
+      run: |
+        python evaluation.py &
     # Install Node on the runner
     - name: Install Node
       uses: actions/setup-node@v1
