@@ -66,7 +66,7 @@ jobs:
     # Run the POSTMAN collection
     - name: Run POSTMAN collection
       run: |
-        newman run ./PostmanCollections/class-finder.json > testResultsKasim/runreport1.json
+        newman run ./PostmanCollections/class-finder.json
 
     # Upload the contents of Test Results directory to workspace
     - name: Output the run Details
