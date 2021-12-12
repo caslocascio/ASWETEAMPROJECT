@@ -59,7 +59,7 @@ jobs:
       
     - name: Run Local Server
       run: |
-        python evaluation.py
+        python evaluation.py &
     # Install Node on the runner
     - name: Install Node
       uses: actions/setup-node@v1
