@@ -1,7 +1,7 @@
 {
-	"id": "5321dee0-2fc1-4e1b-ab5c-54501d48dcc3",
+	"id": "fcbc4d88-f950-4890-ad79-12c732ae0f74",
 	"name": "Class Finder",
-	"timestamp": "2021-12-11T22:30:32.693Z",
+	"timestamp": "2021-12-13T19:37:03.325Z",
 	"collection_id": "18347402-d90d68d2-bc16-45ce-903e-93d65075577c",
 	"folder_id": 0,
 	"environment_id": "0",
@@ -12,7 +12,7 @@
 			"id": "3844ea9e-c45a-41ff-80a4-936aacd978ea",
 			"name": "math",
 			"url": "http://127.0.0.1:5000/classes?classtype=math&comparatortype=easy",
-			"time": 11042,
+			"time": 5396,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -32,7 +32,7 @@
 				}
 			},
 			"times": [
-				11042
+				5396
 			],
 			"allTests": [
 				{
@@ -45,7 +45,7 @@
 			"id": "2c7d6710-4bcc-44cd-a761-33f38a20ee44",
 			"name": "computer science",
 			"url": "http://127.0.0.1:5000/classes?classtype=computer%20science&comparatortype=final",
-			"time": 4836,
+			"time": 5037,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -65,7 +65,7 @@
 				}
 			},
 			"times": [
-				4836
+				5037
 			],
 			"allTests": [
 				{
@@ -78,7 +78,7 @@
 			"id": "ce36fc2d-647d-4385-87d4-11f70c9c67ca",
 			"name": "art",
 			"url": "http://127.0.0.1:5000/classes?classtype=art&comparatortype=difficulty",
-			"time": 5218,
+			"time": 6133,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -98,7 +98,7 @@
 				}
 			},
 			"times": [
-				5218
+				6133
 			],
 			"allTests": [
 				{
@@ -111,7 +111,7 @@
 			"id": "f7a6fb7d-05f6-4ae5-aca6-a345e5e05a33",
 			"name": "language",
 			"url": "http://127.0.0.1:5000/classes?classtype=language&comparatortype=difficulty",
-			"time": 4897,
+			"time": 5584,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -131,7 +131,7 @@
 				}
 			},
 			"times": [
-				4897
+				5584
 			],
 			"allTests": [
 				{
@@ -144,7 +144,7 @@
 			"id": "f30337b3-a1cd-4948-87bb-e0b446494f32",
 			"name": "Recommend Professor",
 			"url": "http://127.0.0.1:5000/recommendProfessor?course=User%20Interface%20Design",
-			"time": 2780,
+			"time": 2832,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -164,7 +164,7 @@
 				}
 			},
 			"times": [
-				2780
+				2832
 			],
 			"allTests": [
 				{
@@ -175,7 +175,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 28773,
+	"totalTime": 24982,
 	"collection": {
 		"requests": [
 			{

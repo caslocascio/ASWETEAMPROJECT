@@ -1,7 +1,7 @@
 {
-	"id": "b5012276-23a9-417a-8f9c-118b26a25eb3",
+	"id": "d3c29ace-5624-4822-8aa3-b653c7c6a481",
 	"name": "Easy vs Hard Professors and Classes",
-	"timestamp": "2021-12-11T22:31:19.096Z",
+	"timestamp": "2021-12-13T19:37:55.658Z",
 	"collection_id": "18347402-ced364f6-c9b3-4f8e-994b-1681289338ef",
 	"folder_id": 0,
 	"environment_id": "0",
@@ -12,7 +12,7 @@
 			"id": "d46a3c2f-c742-4afd-bc94-54b98803f8d3",
 			"name": "easy professor",
 			"url": "http://127.0.0.1:5000/easy?profname=Aaron%20Fox&course=",
-			"time": 715,
+			"time": 798,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -32,7 +32,7 @@
 				}
 			},
 			"times": [
-				715
+				798
 			],
 			"allTests": [
 				{
@@ -45,7 +45,7 @@
 			"id": "6b878786-d9b8-4723-9b99-4c148d7ab101",
 			"name": "difficulty professor",
 			"url": "http://127.0.0.1:5000/difficulty?profname=Achille%20Varzi&course=",
-			"time": 705,
+			"time": 645,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -65,7 +65,7 @@
 				}
 			},
 			"times": [
-				705
+				645
 			],
 			"allTests": [
 				{
@@ -78,7 +78,7 @@
 			"id": "b7cd51b2-8a2f-4584-8e57-1e10e2840305",
 			"name": "difficulty course",
 			"url": "http://127.0.0.1:5000/difficulty?course=Calculus%20I&profname=",
-			"time": 646,
+			"time": 1056,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -98,7 +98,7 @@
 				}
 			},
 			"times": [
-				646
+				1056
 			],
 			"allTests": [
 				{
@@ -111,7 +111,7 @@
 			"id": "05f9c38b-6426-4bff-9949-06eaa2b30c1a",
 			"name": "easy course",
 			"url": "http://127.0.0.1:5000/easy?course=Metaphysics&profname=",
-			"time": 613,
+			"time": 634,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -131,7 +131,7 @@
 				}
 			},
 			"times": [
-				613
+				634
 			],
 			"allTests": [
 				{
@@ -142,7 +142,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 2679,
+	"totalTime": 3133,
 	"collection": {
 		"requests": [
 			{

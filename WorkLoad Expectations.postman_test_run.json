@@ -1,7 +1,7 @@
 {
-	"id": "0a986009-dd25-472d-b9a0-132d968362f3",
+	"id": "28b4f6bb-5143-4e35-a68b-f44b8a0e62a6",
 	"name": "WorkLoad Expectations",
-	"timestamp": "2021-12-11T22:32:13.267Z",
+	"timestamp": "2021-12-13T19:39:23.500Z",
 	"collection_id": "18347402-054140de-addf-402e-b668-fd426b95f07c",
 	"folder_id": 0,
 	"environment_id": "0",
@@ -12,7 +12,7 @@
 			"id": "d56ef825-a4a8-405a-b224-3b7ecbd529e0",
 			"name": "final",
 			"url": "http://127.0.0.1:5000/final?course=Intro%20to%20Psychology",
-			"time": 583,
+			"time": 941,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -32,7 +32,7 @@
 				}
 			},
 			"times": [
-				583
+				941
 			],
 			"allTests": [
 				{
@@ -45,7 +45,7 @@
 			"id": "6f0a673d-0d5c-4286-b013-3908dacfb21a",
 			"name": "extensions",
 			"url": "http://127.0.0.1:5000/extensions?profname=Eugene%20Wu",
-			"time": 545,
+			"time": 1240,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -65,7 +65,7 @@
 				}
 			},
 			"times": [
-				545
+				1240
 			],
 			"allTests": [
 				{
@@ -76,7 +76,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 1128,
+	"totalTime": 2181,
 	"collection": {
 		"requests": [
 			{

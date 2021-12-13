@@ -1,7 +1,7 @@
 {
-	"id": "ddfb553c-a387-4382-9dd3-3b2675e10204",
+	"id": "88429275-bc2d-45f1-a357-7855538e4b7a",
 	"name": "Hello World: First Interactions with Service",
-	"timestamp": "2021-12-11T22:31:32.586Z",
+	"timestamp": "2021-12-13T19:38:13.673Z",
 	"collection_id": "18347402-4e6d6cb4-63b2-490a-a726-163f722ae9c7",
 	"folder_id": 0,
 	"environment_id": "0",
@@ -12,7 +12,7 @@
 			"id": "cbd82394-927b-4747-9468-8cc4da3ee7b5",
 			"name": "hello world",
 			"url": "http://127.0.0.1:5000/",
-			"time": 6,
+			"time": 11,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -32,7 +32,7 @@
 				}
 			},
 			"times": [
-				6
+				11
 			],
 			"allTests": [
 				{
@@ -43,7 +43,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 6,
+	"totalTime": 11,
 	"collection": {
 		"requests": [
 			{

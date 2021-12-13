@@ -166,14 +166,14 @@ class Test_Testevaluation(unittest.TestCase):
         # success response
         self.assertEqual(200, response.status_code)
         # check response message
+        self.maxDiff = None
         self.assertEqual(
             response.get_json(),
-            {'class_results': [['First-Year Arabic I', 0],
-                               ['V1101-V1102 Elementary Spanish', 0],
-                               ['Elementary French I', 2],
-                               ['First-Year English', 3],
-                               ['English Colloquium: Skepticism' +
-                                ' and Affirmation', 3]]}
+            {'class_results': [['V1101-V1102 Elementary Spanish', 0],
+                               ['Intermediate Italian II', 0],
+                               [' Elementary Italian I', 1],
+                               ['English Lit 1500-1600', 1],
+                               ['Elementary French I', 2]]}
         )
 
     def test_classes_endpoint_math(self):
@@ -186,12 +186,14 @@ class Test_Testevaluation(unittest.TestCase):
         # success response
         self.assertEqual(200, response.status_code)
         # check response message
+        self.maxDiff = None
         self.assertEqual(
             response.get_json(),
             {'class_results': [['Principles of Applied Mathematics', 0],
                                ['Math Methods: Financial Price Analysis', 0],
+                               ['Multivariable Calculus for Engineers' +
+                                ' and Applied Scientists', 0],
                                ['Calculus I', 9],
-                               ['Discrete Mathematics', 11],
                                ['Calculus III', 33]]}
         )
 
@@ -205,12 +207,13 @@ class Test_Testevaluation(unittest.TestCase):
         # success response
         self.assertEqual(200, response.status_code)
         # check response message
+        self.maxDiff = None
         self.assertEqual(
             response.get_json(),
-            {'class_results': [['Art of the Essay', 0],
-                               ['Late 20th Century Art', 0],
-                               ['Introduction to the History of ' +
-                                'Photography', 1],
+            {'class_results': [['Late 20th Century Art', 0],
+                               ['Arts and Humanities in the City', 0],
+                               ['Introduction to the History' +
+                                ' of Photography', 1],
                                ['W3650 20th Century Art', 1],
                                ['20th Century Art', 2]]}
         )

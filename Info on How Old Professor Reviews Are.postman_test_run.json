@@ -1,7 +1,7 @@
 {
-	"id": "5832f13b-b57f-48ab-9ac8-0e3fcde50b64",
+	"id": "df625dc6-a4f9-45b2-a63c-d1de1a05fa11",
 	"name": "Info on How Old Professor Reviews Are",
-	"timestamp": "2021-12-11T22:31:43.033Z",
+	"timestamp": "2021-12-13T19:38:33.179Z",
 	"collection_id": "18366826-59e76ca0-27a0-44f5-a69c-ede7450859ca",
 	"folder_id": 0,
 	"environment_id": "0",
@@ -12,7 +12,7 @@
 			"id": "85e2693c-6b65-4b9a-b89e-52cb47104a2e",
 			"name": "review ages",
 			"url": "http://127.0.0.1:5000/review_ages/2009-12-31?profname=Aaron%20Fox",
-			"time": 676,
+			"time": 961,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -32,7 +32,7 @@
 				}
 			},
 			"times": [
-				676
+				961
 			],
 			"allTests": [
 				{
@@ -43,7 +43,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 676,
+	"totalTime": 961,
 	"collection": {
 		"requests": [
 			{
