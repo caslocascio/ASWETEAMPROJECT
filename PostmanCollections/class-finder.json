@@ -24,8 +24,8 @@
                   "  const responseJson = pm.response.json();",
                   "  pm.expect(responseJson.class_results[0]).to.eql(['Principles of Applied Mathematics', 0]);",
                   "  pm.expect(responseJson.class_results[1]).to.eql(['Math Methods: Financial Price Analysis', 0]);",
-                  "  pm.expect(responseJson.class_results[2]).to.eql(['Calculus I', 9]);",
-                  "  pm.expect(responseJson.class_results[3]).to.eql(['Discrete Mathematics', 11]);",
+                  "  pm.expect(responseJson.class_results[2]).to.eql(['Multivariable Calculus for Engineers and Applied Scientists', 0]);",
+                  "  pm.expect(responseJson.class_results[3]).to.eql(['Calculus I', 9]);",
                   "  pm.expect(responseJson.class_results[4]).to.eql(['Calculus III', 33]);",
                   "});"
                 ],
@@ -33,7 +33,7 @@
               }
             }
           ],
-          "_postman_id": "3844ea9e-c45a-41ff-80a4-936aacd978ea",
+          "id": "3844ea9e-c45a-41ff-80a4-936aacd978ea",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
@@ -92,7 +92,7 @@
               }
             }
           ],
-          "_postman_id": "2c7d6710-4bcc-44cd-a761-33f38a20ee44",
+          "id": "2c7d6710-4bcc-44cd-a761-33f38a20ee44",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
@@ -151,7 +151,7 @@
               }
             }
           ],
-          "_postman_id": "ce36fc2d-647d-4385-87d4-11f70c9c67ca",
+          "id": "ce36fc2d-647d-4385-87d4-11f70c9c67ca",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
@@ -210,7 +210,7 @@
               }
             }
           ],
-          "_postman_id": "f7a6fb7d-05f6-4ae5-aca6-a345e5e05a33",
+          "id": "f7a6fb7d-05f6-4ae5-aca6-a345e5e05a33",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
@@ -245,7 +245,7 @@
           "response": []
         }
       ],
-      "_postman_id": "bfc76815-2362-417a-be24-01142460d2ac"
+      "id": "bfc76815-2362-417a-be24-01142460d2ac"
     },
     {
       "name": "Recommend Professor",
@@ -268,7 +268,7 @@
           }
         }
       ],
-      "_postman_id": "f30337b3-a1cd-4948-87bb-e0b446494f32",
+      "id": "f30337b3-a1cd-4948-87bb-e0b446494f32",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
