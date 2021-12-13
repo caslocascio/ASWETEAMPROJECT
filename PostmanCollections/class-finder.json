@@ -132,7 +132,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "6be2ec50-92af-4c7b-84da-d30f87cedce0",
+                "id": "236763c3-7b58-41a6-93f6-01c17d591e43",
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -140,8 +140,8 @@
                   "",
                   "pm.test(\"5 Art Classes Comparator Type Difficulty\", () => {",
                   "  const responseJson = pm.response.json();",
-                  "  pm.expect(responseJson.class_results[0]).to.eql(['Art of the Essay', 0]);",
-                  "  pm.expect(responseJson.class_results[1]).to.eql(['Late 20th Century Art', 0]);",
+                  "  pm.expect(responseJson.class_results[0]).to.eql(['Late 20th Century Art', 0]);",
+                  "  pm.expect(responseJson.class_results[1]).to.eql(['Arts and Humanities in the City', 0]);",
                   "  pm.expect(responseJson.class_results[2]).to.eql(['Introduction to the History of Photography', 1]);",
                   "  pm.expect(responseJson.class_results[3]).to.eql(['W3650 20th Century Art', 1]);",
                   "  pm.expect(responseJson.class_results[4]).to.eql(['20th Century Art', 2]);",
