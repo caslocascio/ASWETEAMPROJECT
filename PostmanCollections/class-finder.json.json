@@ -201,7 +201,7 @@
                   "  const responseJson = pm.response.json();",
                   "  pm.expect(responseJson.class_results[0]).to.eql(['V1101-V1102 Elementary Spanish', 0]);",
                   "  pm.expect(responseJson.class_results[1]).to.eql(['Intermediate Italian II', 0]);",
-                  "  pm.expect(responseJson.class_results[2]).to.eql(['Elementary Italian I', 1]);",
+                  "  pm.expect(responseJson.class_results[2]).to.eql([' Elementary Italian I', 1]);",
                   "  pm.expect(responseJson.class_results[3]).to.eql(['English Lit 1500-1600', 1]);",
                   "  pm.expect(responseJson.class_results[4]).to.eql(['Elementary French I', 2]);",
                   "});"
